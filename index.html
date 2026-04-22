@@ -5211,7 +5211,11 @@ document.addEventListener('keydown', e => {
    ============================================================ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw-free.js').catch(console.error);
+    navigator.serviceWorker.register('/sw-free.js')
+      .then(reg => {
+        reg.update(); // force check for new SW version
+      })
+      .catch(console.error);
   });
 }
 
