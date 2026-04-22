@@ -7,14 +7,14 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1e3a5f">
+<meta name="theme-color" content="#012169">
 <meta name="description" content="Curso de Inglés Básico A1-A2 — 12 semanas interactivas con vocabulario, gramática, juegos y pronunciación.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Inglés A1-A2">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e3a5f'/><text y='.9em' font-size='72' x='50%' text-anchor='middle' dominant-baseline='hanging'>📚</text></svg>">
-<link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Curso%20de%20Ingl%C3%A9s%20B%C3%A1sico%20A1-A2%22,%22short_name%22:%22Ingl%C3%A9s%20A1-A2%22,%22description%22:%22Curso%20interactivo%2012%20semanas%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%231e3a5f%22,%22theme_color%22:%22%231e3a5f%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231e3a5f'/><text y='.9em' font-size='72' x='50%25' text-anchor='middle'>📚</text></svg>%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]}">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Inglés Free">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20192%20192'%3E%3Crect%20width%3D'192'%20height%3D'192'%20rx%3D'30'%20fill%3D'%23012169'%2F%3E%3Crect%20x%3D'20'%20y%3D'20'%20width%3D'152'%20height%3D'152'%20rx%3D'22'%20fill%3D'%23C8102E'%2F%3E%3Ctext%20x%3D'96'%20y%3D'128'%20font-size%3D'106'%20text-anchor%3D'middle'%20font-family%3D'serif'%20fill%3D'%23ffffff'%3EA%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link rel="manifest" href="/manifest-free.json">
 <title>Inglés Básico A1-A2 | Curso Interactivo (Gratis)</title>
 <style>
 /* ============================================================
@@ -316,6 +316,38 @@ input,select{font-family:inherit;outline:none}
 .fc-result-big{font-size:2.5rem;font-weight:800;margin:12px 0}
 
 /* ============================================================
+   GAME LOBBY (selector de juegos)
+   ============================================================ */
+.game-lobby{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:8px}
+.game-lobby-card{
+  background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);
+  padding:24px 20px;text-align:center;cursor:default;
+  box-shadow:var(--card-shadow);transition:var(--transition);
+  display:flex;flex-direction:column;align-items:center;gap:10px
+}
+.game-lobby-card:hover{box-shadow:var(--card-shadow-hover);border-color:var(--primary);transform:translateY(-2px)}
+.game-lobby-card .lobby-icon{font-size:2.8rem;line-height:1}
+.game-lobby-card .lobby-name{font-size:1.05rem;font-weight:800;color:var(--text);margin:0}
+.game-lobby-card .lobby-desc{font-size:0.82rem;color:var(--text2);margin:0;line-height:1.4}
+.btn-jugar{
+  margin-top:6px;padding:10px 28px;
+  background:linear-gradient(135deg,#012169,#C8102E);
+  color:#fff;border:none;border-radius:8px;
+  font-size:0.95rem;font-weight:700;cursor:pointer;
+  min-height:44px;transition:var(--transition)
+}
+.btn-jugar:hover{opacity:0.88;transform:scale(1.03)}
+.game-back-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:2px solid var(--border);
+  color:var(--text);border-radius:8px;
+  padding:9px 18px;font-size:0.9rem;font-weight:700;
+  cursor:pointer;margin-bottom:18px;min-height:44px;
+  transition:var(--transition)
+}
+.game-back-btn:hover{border-color:var(--primary);color:var(--primary)}
+
+/* ============================================================
    MEMORY GAME
    ============================================================ */
 .game-select-row{display:flex;gap:12px;align-items:center;margin-bottom:24px;flex-wrap:wrap}
@@ -352,30 +384,50 @@ input,select{font-family:inherit;outline:none}
   font-size: 1rem; font-weight: 600; color: var(--text);
   line-height: 2.2; margin-bottom: 6px;
 }
-.fi-input {
-  display: inline-block; padding: 4px 10px;
-  border: 2px solid var(--border); border-radius: 6px;
-  background: var(--surface); color: var(--text);
-  font-size: 0.95rem; font-family: inherit;
-  width: 130px; margin: 0 4px; transition: var(--transition);
-  vertical-align: middle;
+.fi-hint { font-size: 0.78rem; color: var(--text2); margin-top: 4px; margin-bottom: 12px; }
+.fi-blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--primary); padding: 0 6px; color: var(--primary); font-style: italic; }
+.fi-options {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;
 }
-.fi-input:focus { border-color: var(--primary); outline: none; }
-.fi-input.fi-correct { border-color: var(--success); background: rgba(16,185,129,0.1); color: var(--success); }
-.fi-input.fi-wrong   { border-color: var(--danger);  background: rgba(239,68,68,0.1);  color: var(--danger);  }
-.fi-hint { font-size: 0.78rem; color: var(--text2); margin-top: 4px; }
-.fi-answer-reveal { font-size: 0.82rem; color: var(--success); font-weight: 700; margin-top: 4px; display: none; }
-.btn-check-fi {
+.fi-mc-btn {
+  flex: 1 1 auto; min-width: 120px;
+  padding: 10px 16px;
+  border: 2px solid var(--border); border-radius: 8px;
+  background: var(--surface); color: var(--text);
+  font-size: 0.95rem; font-family: inherit; font-weight: 600;
+  cursor: pointer; transition: var(--transition); text-align: center;
+}
+.fi-mc-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: rgba(1,33,105,0.07); }
+.fi-mc-btn.fi-correct { border-color: var(--success); background: rgba(16,185,129,0.15); color: var(--success); }
+.fi-mc-btn.fi-wrong   { border-color: var(--danger);  background: rgba(239,68,68,0.12);  color: var(--danger); }
+.fi-mc-btn:disabled { cursor: default; }
+.fi-next-btn {
+  display: none; margin-top: 14px; width: 100%;
+  padding: 11px; border-radius: 8px; font-weight: 700; font-size: 0.95rem;
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  color: #fff; padding: 10px 24px; border-radius: 8px; font-weight: 600; margin-top: 8px;
+  color: #fff; border: none; cursor: pointer; transition: var(--transition);
+}
+.fi-next-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(1,33,105,0.35); }
+.fi-progress {
+  font-size: 0.82rem; color: var(--text2); margin-bottom: 14px; font-weight: 600;
 }
 #fi-result {
-  padding: 12px; border-radius: 8px; margin-top: 12px;
-  font-weight: 600; display: none;
+  padding: 20px; border-radius: 12px; margin-top: 12px;
+  text-align: center; display: none;
 }
-#fi-result.ok   { background: rgba(16,185,129,0.1); color: var(--success); border: 1px solid var(--success); }
-#fi-result.fail { background: rgba(239,68,68,0.1);  color: var(--danger);  border: 1px solid var(--danger);  }
-@media(max-width:480px) { .fi-input { width: 100px; } }
+#fi-result .fi-result-score {
+  font-size: 2.8rem; font-weight: 800; margin: 8px 0;
+}
+#fi-result .fi-result-msg {
+  font-size: 1.3rem; font-weight: 800; padding: 8px 18px;
+  border-radius: 10px; display: inline-block; margin: 10px 0;
+  animation: resultMsgIn 0.45s ease both;
+}
+#fi-result .fi-result-msg.msg-perfect   { color: #16a34a; background: rgba(34,197,94,0.12); }
+#fi-result .fi-result-msg.msg-excellent { color: #ca8a04; background: rgba(234,179,8,0.12); }
+#fi-result .fi-result-msg.msg-good      { color: #d97706; background: rgba(234,179,8,0.10); }
+#fi-result .fi-result-msg.msg-retry     { color: #dc2626; background: rgba(248,113,113,0.12); }
+@media(max-width:480px) { .fi-mc-btn { min-width: 90px; font-size: 0.88rem; padding: 9px 10px; } }
 
 /* ============================================================
    STATS
@@ -1204,82 +1256,119 @@ input,select{font-family:inherit;outline:none}
     <div id="tab-juegos" class="tab-panel">
       <div class="section-title">🎮 Juegos</div>
 
-      <!-- Memory Game -->
-      <div class="card">
-        <h3>🧠 Juego de Memoria</h3>
-        <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px">Encuentra los pares Inglés ↔ Español</p>
-        <div class="game-select-row">
-          <select id="mem-module-select">
-            <option value="">— Selecciona módulo —</option>
-          </select>
-          <button class="btn-primary" onclick="startMemoryGame()">¡Jugar!</button>
-        </div>
-        <div id="memory-area">
-          <div class="memory-stats">
-            <div class="memory-stat"><div class="val" id="mem-pairs">0/8</div><div class="lbl">Pares</div></div>
-            <div class="memory-stat"><div class="val" id="mem-moves">0</div><div class="lbl">Movimientos</div></div>
-            <div class="memory-stat"><div class="val" id="mem-timer">0s</div><div class="lbl">Tiempo</div></div>
-          </div>
-          <div class="memory-grid" id="memory-grid"></div>
-          <div id="memory-win">
-            <div style="font-size:2.5rem">🏆</div>
-            <h3 style="margin:12px 0 4px">¡Ganaste!</h3>
-            <p id="mem-win-stats" style="color:var(--text2);margin-bottom:12px"></p>
-            <div class="result-xp">+30 XP ganados</div>
-            <button class="btn-primary" onclick="startMemoryGame()" style="margin-top:14px">Jugar de nuevo</button>
-          </div>
-        </div>
-      </div>
+      <!-- LOBBY: card selector (visible by default) -->
+      <div id="games-lobby">
+        <div class="game-lobby">
 
-      <!-- Fill-Input Game: text input "Completa la Oración" -->
-      <div class="card">
-        <h3>✍️ Escribe la Palabra</h3>
-        <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px">Lee la oración y escribe la palabra que falta</p>
-        <div class="game-select-row">
-          <select id="fi-module-select">
-            <option value="">— Selecciona módulo —</option>
-          </select>
-          <button class="btn-primary" onclick="loadFillInputGame()">Comenzar</button>
-        </div>
-        <div id="fi-questions-container"></div>
-        <div id="fi-action-row" style="display:none;gap:10px;flex-wrap:wrap;margin-top:4px">
-          <button class="btn-check-fi" onclick="checkFillInputGame()">✓ Verificar respuestas</button>
-          <button class="btn-secondary" onclick="loadFillInputGame()" style="padding:10px 20px">🔄 Nuevas preguntas</button>
-        </div>
-        <div id="fi-result"></div>
-      </div>
+          <!-- Card: Juego de Memoria -->
+          <div class="game-lobby-card">
+            <div class="lobby-icon">🧠</div>
+            <p class="lobby-name">Juego de Memoria</p>
+            <p class="lobby-desc">Encuentra los pares Inglés ↔ Español antes de que se acabe el tiempo</p>
+            <button class="btn-jugar" onclick="enterGame('game-memory')">Jugar</button>
+          </div>
 
-      <!-- Conversation Mode -->
-      <div class="card" id="conv-mode-section">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-          <span style="font-size:1.5rem">💬</span>
-          <div>
-            <h3 style="margin:0;font-size:1.05rem;font-weight:700;color:var(--text)">Modo Conversación</h3>
-            <p style="margin:0;font-size:0.82rem;color:var(--text2)">Completa el diálogo con la respuesta correcta</p>
+          <!-- Card: Escribe la Palabra -->
+          <div class="game-lobby-card">
+            <div class="lobby-icon">✍️</div>
+            <p class="lobby-name">Escribe la Palabra</p>
+            <p class="lobby-desc">Lee la oración y elige la palabra correcta en inglés</p>
+            <button class="btn-jugar" onclick="enterGame('game-fill')">Jugar</button>
+          </div>
+
+          <!-- Card: Modo Conversación -->
+          <div class="game-lobby-card">
+            <div class="lobby-icon">💬</div>
+            <p class="lobby-name">Modo Conversación</p>
+            <p class="lobby-desc">Completa el diálogo con la respuesta correcta en cada situación</p>
+            <button class="btn-jugar" onclick="enterGame('game-conv')">Jugar</button>
+          </div>
+
+        </div>
+      </div><!-- /games-lobby -->
+
+      <!-- GAME: Juego de Memoria -->
+      <div id="game-memory" style="display:none">
+        <button class="game-back-btn" onclick="exitGame()">&#8592; Volver</button>
+        <div class="card">
+          <h3>🧠 Juego de Memoria</h3>
+          <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px">Encuentra los pares Inglés ↔ Español</p>
+          <div class="game-select-row">
+            <select id="mem-module-select">
+              <option value="">— Selecciona módulo —</option>
+            </select>
+            <button class="btn-primary" onclick="startMemoryGame()">¡Jugar!</button>
+          </div>
+          <div id="memory-area">
+            <div class="memory-stats">
+              <div class="memory-stat"><div class="val" id="mem-pairs">0/8</div><div class="lbl">Pares</div></div>
+              <div class="memory-stat"><div class="val" id="mem-moves">0</div><div class="lbl">Movimientos</div></div>
+              <div class="memory-stat"><div class="val" id="mem-timer">0s</div><div class="lbl">Tiempo</div></div>
+            </div>
+            <div class="memory-grid" id="memory-grid"></div>
+            <div id="memory-win">
+              <div style="font-size:2.5rem">🏆</div>
+              <h3 style="margin:12px 0 4px">¡Ganaste!</h3>
+              <p id="mem-win-stats" style="color:var(--text2);margin-bottom:12px"></p>
+              <div class="result-xp">+30 XP ganados</div>
+              <button class="btn-primary" onclick="startMemoryGame()" style="margin-top:14px">Jugar de nuevo</button>
+            </div>
           </div>
         </div>
-        <div class="game-select-row">
-          <select id="conv-module-select" onchange="buildConvSelectPreview()">
-            <option value="">— Selecciona módulo —</option>
-          </select>
-          <button onclick="startConvMode()" id="btn-start-conv" style="padding:10px 22px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:700;cursor:pointer">▶ Iniciar</button>
-        </div>
+      </div><!-- /game-memory -->
 
-        <div id="conv-game-area" style="display:none;margin-top:16px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <span id="conv-progress" style="font-size:0.82rem;color:var(--text2)">Diálogo 1 de 5</span>
-            <span id="conv-score-display" style="font-size:0.82rem;color:var(--text2)">✅ 0</span>
+      <!-- GAME: Escribe la Palabra -->
+      <div id="game-fill" style="display:none">
+        <button class="game-back-btn" onclick="exitGame()">&#8592; Volver</button>
+        <div class="card">
+          <h3>✍️ Escribe la Palabra</h3>
+          <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px">Lee la oración y elige la palabra correcta</p>
+          <div class="game-select-row">
+            <select id="fi-module-select">
+              <option value="">— Selecciona módulo —</option>
+            </select>
+            <button class="btn-primary" onclick="loadFillInputGame()">Comenzar</button>
           </div>
-          <div id="conv-situation" style="font-size:0.8rem;color:var(--text2);margin-bottom:8px;font-style:italic"></div>
-          <div id="conv-chat-area" class="conv-chat-area"></div>
-          <div id="conv-streak-indicator" style="display:none"></div>
-          <div id="conv-options"></div>
-          <div id="conv-feedback" class="conv-feedback"></div>
-          <button id="conv-next-btn" onclick="nextConvDialog()" style="display:none;padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:4px">Siguiente →</button>
+          <div id="fi-questions-container"></div>
+          <div id="fi-result"></div>
         </div>
+      </div><!-- /game-fill -->
 
-        <div id="conv-results" style="display:none;text-align:center;padding:24px 16px"></div>
-      </div>
+      <!-- GAME: Modo Conversación -->
+      <div id="game-conv" style="display:none">
+        <button class="game-back-btn" onclick="exitGame()">&#8592; Volver</button>
+        <div class="card" id="conv-mode-section">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+            <span style="font-size:1.5rem">💬</span>
+            <div>
+              <h3 style="margin:0;font-size:1.05rem;font-weight:700;color:var(--text)">Modo Conversación</h3>
+              <p style="margin:0;font-size:0.82rem;color:var(--text2)">Completa el diálogo con la respuesta correcta</p>
+            </div>
+          </div>
+          <div class="game-select-row">
+            <select id="conv-module-select" onchange="buildConvSelectPreview()">
+              <option value="">— Selecciona módulo —</option>
+            </select>
+            <button onclick="startConvMode()" id="btn-start-conv" style="padding:10px 22px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:700;cursor:pointer">▶ Iniciar</button>
+          </div>
+
+          <div id="conv-game-area" style="display:none;margin-top:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+              <span id="conv-progress" style="font-size:0.82rem;color:var(--text2)">Diálogo 1 de 5</span>
+              <span id="conv-score-display" style="font-size:0.82rem;color:var(--text2)">✅ 0</span>
+            </div>
+            <div id="conv-situation" style="font-size:0.8rem;color:var(--text2);margin-bottom:8px;font-style:italic"></div>
+            <div id="conv-chat-area" class="conv-chat-area"></div>
+            <div id="conv-streak-indicator" style="display:none"></div>
+            <div id="conv-options"></div>
+            <div id="conv-feedback" class="conv-feedback"></div>
+            <button id="conv-next-btn" onclick="nextConvDialog()" style="display:none;padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:4px">Siguiente →</button>
+          </div>
+
+          <div id="conv-results" style="display:none;text-align:center;padding:24px 16px"></div>
+        </div>
+      </div><!-- /game-conv -->
+
     </div>
 
     <!-- TAB: ESTADÍSTICAS -->
@@ -1964,11 +2053,37 @@ function showTab(name) {
   if (name !== 'juegos') {
     clearInterval(APP.memTimerHandle);
   }
+  // When leaving juegos tab, reset lobby so next visit shows the card grid
+  if (name !== 'juegos') {
+    exitGame(true);
+  }
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelector(`[data-tab="${name}"]`).classList.add('active');
   if (name === 'estadisticas') renderStats();
+}
+
+// Show a specific game and hide the lobby
+function enterGame(gameId) {
+  document.getElementById('games-lobby').style.display = 'none';
+  ['game-memory', 'game-fill', 'game-conv'].forEach(function(id) {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.getElementById(gameId).style.display = 'block';
+}
+
+// Return to the game lobby card grid
+// silentReset=true skips the lobby show (used when switching tabs)
+function exitGame(silentReset) {
+  ['game-memory', 'game-fill', 'game-conv'].forEach(function(id) {
+    document.getElementById(id).style.display = 'none';
+  });
+  // Stop memory timer if leaving the memory game
+  clearInterval(APP.memTimerHandle);
+  if (!silentReset) {
+    document.getElementById('games-lobby').style.display = 'block';
+  }
 }
 
 /* ============================================================
@@ -4330,6 +4445,10 @@ const CONV_DIALOGS_BY_MODULE = {
    FILL-INPUT GAME — JS functions
    ============================================================ */
 let fillInputCurrent = [];
+let fillInputState  = { idx: 0, correct: 0, streak: 0, answered: false, moduleId: null };
+
+// Fallback distractors when the module vocab pool is too small
+const FI_FALLBACK_WORDS = ['happy','water','table','book','house','city','green','door','apple','music','phone','money','time','place','right'];
 
 function buildFillInputSelect() {
   const sel = document.getElementById('fi-module-select');
@@ -4343,40 +4462,55 @@ function buildFillInputSelect() {
   });
 }
 
-function playFillInputCorrectSound() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sine'; o.frequency.value = 523;
-    g.gain.setValueAtTime(0.05, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-    o.start(); o.stop(ctx.currentTime + 0.15);
-  } catch(e) {}
-}
+/** Return 2 distractor words for a question, drawn from the same module's vocabulary/answers */
+function getFillDistractors(correctAnswer, moduleId) {
+  const pool = [];
 
-function playFillInputWrongSound() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = 'sine'; o.frequency.value = 300;
-    g.gain.setValueAtTime(0.04, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-    o.start(); o.stop(ctx.currentTime + 0.12);
-  } catch(e) {}
+  // 1. Gather all answer words from FILL_SENTENCES_BY_MODULE for this module
+  const sentences = FILL_SENTENCES_BY_MODULE[moduleId] || [];
+  sentences.forEach(s => {
+    const w = s.answer.trim().toLowerCase();
+    if (w !== correctAnswer.trim().toLowerCase()) pool.push(s.answer);
+  });
+
+  // 2. Also gather English words from MODULES vocab for this module
+  const mod = MODULES.find(m => m.id === moduleId);
+  if (mod && mod.vocab) {
+    mod.vocab.forEach(v => {
+      // Use only single-word entries to keep options readable
+      const w = v.en.trim();
+      if (!w.includes(' ') && w.toLowerCase() !== correctAnswer.trim().toLowerCase()) {
+        pool.push(w);
+      }
+    });
+  }
+
+  // 3. Pad with fallback words if needed
+  FI_FALLBACK_WORDS.forEach(w => {
+    if (w.toLowerCase() !== correctAnswer.trim().toLowerCase()) pool.push(w);
+  });
+
+  // Deduplicate (case-insensitive)
+  const seen = new Set([correctAnswer.trim().toLowerCase()]);
+  const unique = [];
+  pool.forEach(w => {
+    const key = w.trim().toLowerCase();
+    if (!seen.has(key)) { seen.add(key); unique.push(w.trim()); }
+  });
+
+  // Pick 2 random distractors
+  const shuffled = shuffleArray(unique);
+  return shuffled.slice(0, 2);
 }
 
 function loadFillInputGame() {
   const container = document.getElementById('fi-questions-container');
-  const actionRow = document.getElementById('fi-action-row');
   const result = document.getElementById('fi-result');
   if (!container) return;
 
   const id = parseInt(document.getElementById('fi-module-select').value);
   if (!id) {
     container.innerHTML = '<div class="empty-area">👆 Selecciona un módulo para comenzar</div>';
-    if (actionRow) actionRow.style.display = 'none';
     if (result) result.style.display = 'none';
     return;
   }
@@ -4384,78 +4518,152 @@ function loadFillInputGame() {
   const pool = FILL_SENTENCES_BY_MODULE[id];
   if (!pool || pool.length === 0) {
     container.innerHTML = '<div class="empty-area">📝 Este módulo no tiene ejercicios disponibles</div>';
-    if (actionRow) actionRow.style.display = 'none';
     return;
   }
 
-  // Pick 3 random sentences from the 6-item pool
+  // Pick 3 random sentences from the pool
   fillInputCurrent = shuffleArray(pool).slice(0, 3);
+  fillInputState = { idx: 0, correct: 0, streak: 0, answered: false, moduleId: id };
+
   if (result) result.style.display = 'none';
-  container.innerHTML = '';
-  if (actionRow) actionRow.style.display = 'flex';
-
-  fillInputCurrent.forEach((q, qi) => {
-    const div = document.createElement('div');
-    div.className = 'fi-question';
-    const sentenceHTML = q.sentence.replace('___',
-      `<input type="text" class="fi-input" id="fi-inp-${qi}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="...">`
-    );
-    div.innerHTML = `
-      <div class="fi-sentence">${qi + 1}. ${sentenceHTML}</div>
-      <div class="fi-hint">💡 Pista: ${q.hint}</div>
-      <div class="fi-answer-reveal" id="fi-reveal-${qi}"></div>
-    `;
-    container.appendChild(div);
-
-    const inp = div.querySelector(`#fi-inp-${qi}`);
-    if (inp) {
-      inp.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); checkFillInputGame(); }
-      });
-    }
-  });
+  renderFillQuestion(0);
 }
 
-function checkFillInputGame() {
-  let correct = 0;
+/** Render a single multiple-choice question by index */
+function renderFillQuestion(idx) {
+  const container = document.getElementById('fi-questions-container');
+  if (!container) return;
 
-  fillInputCurrent.forEach((q, qi) => {
-    const inp = document.getElementById(`fi-inp-${qi}`);
-    const reveal = document.getElementById(`fi-reveal-${qi}`);
-    if (!inp) return;
-
-    inp.disabled = true;
-    inp.classList.remove('fi-correct', 'fi-wrong');
-    const userVal = inp.value.trim().toLowerCase();
-    const expected = q.answer.trim().toLowerCase();
-
-    if (userVal === expected) {
-      inp.classList.add('fi-correct');
-      correct++;
-    } else {
-      inp.classList.add('fi-wrong');
-      if (reveal) {
-        reveal.textContent = `Respuesta correcta: "${q.answer}"`;
-        reveal.style.display = 'block';
-      }
-    }
-  });
-
+  const q = fillInputCurrent[idx];
   const total = fillInputCurrent.length;
-  const pct = Math.round((correct / total) * 100);
-  const result = document.getElementById('fi-result');
-  if (result) {
-    result.style.display = 'block';
-    result.className = pct >= 67 ? 'ok' : 'fail';
-    result.textContent = `${correct}/${total} correctas (${pct}%)  ${pct >= 67 ? '¡Bien hecho! 🎉' : 'Sigue practicando 💪'}`;
+
+  // Build the sentence display — replace ___ with a styled blank
+  const sentenceHTML = q.sentence.replace('___', '<span class="fi-blank">___</span>');
+
+  // Build options: 1 correct + 2 distractors, shuffled
+  const distractors = getFillDistractors(q.answer, fillInputState.moduleId);
+  const allOptions = shuffleArray([q.answer, ...distractors]);
+  const correctIdx  = allOptions.indexOf(q.answer);
+
+  // Render
+  container.innerHTML = `
+    <div class="fi-progress">Pregunta ${idx + 1} de ${total}</div>
+    <div class="fi-question" id="fi-current-question">
+      <div class="fi-sentence">${sentenceHTML}</div>
+      <div class="fi-hint">💡 Pista: ${q.hint}</div>
+      <div class="fi-options">
+        ${allOptions.map((opt, oi) => `
+          <button class="fi-mc-btn" id="fi-opt-${oi}"
+            onclick="onFillOptionClick(${oi}, ${oi === correctIdx}, ${correctIdx})">
+            ${opt}
+          </button>
+        `).join('')}
+      </div>
+      <button class="fi-next-btn" id="fi-next-btn" onclick="advanceFillQuestion()">
+        ${idx + 1 < total ? 'Siguiente →' : 'Ver resultados'}
+      </button>
+    </div>
+  `;
+  fillInputState.answered = false;
+}
+
+/** Handle clicking a multiple-choice option */
+function onFillOptionClick(clickedIdx, isCorrect, correctIdx) {
+  // Prevent double-answering
+  if (fillInputState.answered) return;
+  fillInputState.answered = true;
+
+  // Disable all buttons
+  const allBtns = document.querySelectorAll('.fi-mc-btn');
+  allBtns.forEach(b => { b.disabled = true; });
+
+  const clickedBtn  = document.getElementById(`fi-opt-${clickedIdx}`);
+  const correctBtn  = document.getElementById(`fi-opt-${correctIdx}`);
+
+  if (isCorrect) {
+    clickedBtn.classList.add('fi-correct');
+    fillInputState.correct++;
+    fillInputState.streak++;
+    if (fillInputState.streak >= 3) {
+      playStreakSound();
+    } else {
+      playCorrectSound();
+    }
+  } else {
+    clickedBtn.classList.add('fi-wrong');
+    correctBtn.classList.add('fi-correct');  // highlight correct answer
+    fillInputState.streak = 0;
+    playWrongSound();
   }
 
-  if (correct === total) {
-    playFillInputCorrectSound();
+  // Show the Next button
+  const nextBtn = document.getElementById('fi-next-btn');
+  if (nextBtn) nextBtn.style.display = 'block';
+}
+
+/** Advance to the next question, or show results if done */
+function advanceFillQuestion() {
+  const nextIdx = fillInputState.idx + 1;
+  if (nextIdx < fillInputCurrent.length) {
+    fillInputState.idx = nextIdx;
+    renderFillQuestion(nextIdx);
   } else {
-    playFillInputWrongSound();
+    showFillResults();
   }
 }
+
+/** Show the final results screen after all 3 questions */
+function showFillResults() {
+  const container = document.getElementById('fi-questions-container');
+  const result     = document.getElementById('fi-result');
+  if (!container || !result) return;
+
+  container.innerHTML = '';
+
+  const correct = fillInputState.correct;
+  const total   = fillInputCurrent.length;
+  const pct     = Math.round((correct / total) * 100);
+
+  const emoji = pct === 100 ? '🎉' : pct >= 67 ? '👏' : '💪';
+  const col   = pct >= 67 ? 'var(--success)' : 'var(--danger)';
+
+  let resultMsg, resultClass;
+  if (pct === 100) {
+    resultMsg   = '¡Perfecto! 🏆 Eres increíble';
+    resultClass = 'msg-perfect';
+  } else if (pct >= 67) {
+    resultMsg   = '¡Bien hecho! 🌟 Sigue así';
+    resultClass = 'msg-excellent';
+  } else if (pct >= 34) {
+    resultMsg   = '¡Buen esfuerzo! 👍 Sigue practicando';
+    resultClass = 'msg-good';
+  } else {
+    resultMsg   = '¡No te rindas! 💪 Inténtalo de nuevo';
+    resultClass = 'msg-retry';
+  }
+
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div style="font-size:2.2rem">${emoji}</div>
+    <h3 style="margin:8px 0 4px">Resultado</h3>
+    <div class="fi-result-score" style="color:${col}">${correct}/${total}</div>
+    <div style="color:var(--text2);font-size:0.88rem;margin-bottom:6px">${pct}% de respuestas correctas</div>
+    <div class="fi-result-msg ${resultClass}">${resultMsg}</div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+      <button class="btn-primary" onclick="loadFillInputGame()">🔄 Jugar de nuevo</button>
+    </div>
+  `;
+
+  // Play overall result sound — mirrors quiz scoring thresholds
+  if (pct >= 67) {
+    playXPSound(pct === 100);
+  } else {
+    playXPSound(false);
+  }
+}
+
+// checkFillInputGame kept as a no-op to avoid errors from any cached references
+function checkFillInputGame() {}
 
 /* ============================================================
    MEMORY GAME
@@ -4975,40 +5183,9 @@ document.addEventListener('keydown', e => {
    PWA — SERVICE WORKER (offline support)
    ============================================================ */
 if ('serviceWorker' in navigator) {
-  const swCode = `
-    const CACHE = 'ingles-a1a2-v2';
-    const NO_CACHE = [];
-
-    self.addEventListener('install', e => {
-      self.skipWaiting();
-    });
-
-    self.addEventListener('activate', e => {
-      e.waitUntil(
-        caches.keys().then(keys =>
-          Promise.all(keys.map(k => caches.delete(k)))
-        ).then(() => clients.claim())
-      );
-    });
-
-    self.addEventListener('fetch', e => {
-      const url = e.request.url;
-      if (NO_CACHE.some(d => url.includes(d))) return;
-      e.respondWith(
-        caches.match(e.request).then(cached => {
-          if (cached) return cached;
-          return fetch(e.request).then(res => {
-            const clone = res.clone();
-            caches.open(CACHE).then(c => c.put(e.request, clone));
-            return res;
-          }).catch(() => cached);
-        })
-      );
-    });
-  `;
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swURL = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swURL).catch(() => {});
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw-free.js').catch(console.error);
+  });
 }
 
 /* ============================================================
