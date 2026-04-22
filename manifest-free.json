@@ -2,7 +2,7 @@
   "name": "Inglés Básico Gratis",
   "short_name": "Inglés Free",
   "description": "Aprende inglés A1-A2 gratis — sin conexión",
-  "start_url": "/index-free.html",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#012169",

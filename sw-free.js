@@ -1,52 +1,58 @@
-// Service Worker for Inglés Básico Gratis (index-free.html)
-// Cache name — bump the version string to force a cache refresh on update
-const CACHE_NAME = 'curso-ingles-free-v3';
+const CACHE_NAME = 'curso-ingles-free-v4';
 
-// Core assets to pre-cache on install
-// NOTE: Vercel serves index-free.html as the root index, so we cache both
-// '/' and '/index.html' so offline navigation always has a valid shell to fall back to.
 const ASSETS = [
   '/',
   '/index.html',
   '/manifest-free.json'
 ];
 
-// ── Install: pre-cache core assets ──────────────────────────────────────────
+// Install: cache assets individually so one failure doesn't abort the whole install
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(
+        ASSETS.map(url =>
+          cache.add(url).catch(err => console.warn('[SW] Failed to cache:', url, err))
+        )
+      )
+    )
   );
-  // Activate immediately without waiting for old SW to finish
   self.skipWaiting();
 });
 
-// ── Activate: delete any old caches from previous versions ──────────────────
+// Activate: delete all old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+        keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
       )
     )
   );
-  // Take control of all open clients immediately
   self.clients.claim();
 });
 
-// ── Fetch: network-first with cache fallback ────────────────────────────────
-self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request)
-      .then(res => {
-        if (res && res.status === 200 && res.type !== 'opaque') {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+// Fetch: network-first, fall back to cache, fall back to root
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        if (response && response.status === 200 && response.type !== 'opaque') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
-        return res;
+        return response;
       })
-      .catch(() => caches.match(e.request).then(cached => cached || caches.match('/')))
+      .catch(() =>
+        caches.match(event.request).then(cached => {
+          if (cached) return cached;
+          // For navigation requests, return the cached root shell
+          if (event.request.mode === 'navigate') {
+            return caches.match('/') || caches.match('/index.html');
+          }
+        })
+      )
   );
 });
