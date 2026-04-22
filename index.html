@@ -357,20 +357,26 @@ input,select{font-family:inherit;outline:none}
 .memory-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;min-width:80px}
 .memory-stat .val{font-size:1.3rem;font-weight:800;color:var(--primary)}
 .memory-stat .lbl{font-size:0.7rem;color:var(--text2);text-transform:uppercase}
-.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:600px;margin:0 auto 20px}
-.mem-card{height:80px;perspective:800px;cursor:pointer}
+.memory-grid{display:grid;grid-template-columns:repeat(var(--mem-cols,4),1fr);gap:10px;max-width:600px;margin:0 auto 20px}
+.mem-card{height:90px;perspective:800px;cursor:pointer;overflow:hidden}
 .mem-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.4s ease}
 .mem-card.flipped .mem-inner,.mem-card.matched .mem-inner{transform:rotateY(180deg)}
 .mem-face{
   position:absolute;inset:0;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
-  padding:6px;text-align:center;font-size:0.8rem;font-weight:600;
+  padding:8px 6px;text-align:center;font-size:clamp(0.7rem,2.5vw,1.1rem);font-weight:600;
+  word-break:break-word;hyphens:auto;line-height:1.2;overflow:hidden;
 }
 .mem-front{background:linear-gradient(135deg,#012169,#C8102E);color:#fff;box-shadow:0 2px 8px rgba(200,16,46,0.3)}
 .mem-back{background:var(--surface);border:2px solid var(--border);transform:rotateY(180deg);color:var(--text)}
 .mem-card.matched .mem-back{border-color:var(--success);background:rgba(16,185,129,0.1);color:var(--success)}
 #memory-win{display:none;text-align:center;padding:24px}
+.mem-pair-selector{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.mem-pair-selector label{font-size:0.85rem;color:var(--text2);font-weight:600;white-space:nowrap}
+.mem-pair-btn{padding:8px 18px;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;min-width:44px;min-height:44px}
+.mem-pair-btn.active{border-color:var(--primary);background:var(--primary);color:#fff}
+.mem-pair-btn:hover:not(.active){border-color:var(--primary);color:var(--primary)}
 
 
 /* ============================================================
@@ -563,7 +569,7 @@ input,select{font-family:inherit;outline:none}
   .vocab-grid{grid-template-columns:1fr 1fr}
   .memory-grid{gap:6px}
   .mem-card{height:64px}
-  .mem-face{font-size:0.65rem;padding:4px}
+  .mem-face{font-size:clamp(0.65rem,2.2vw,0.95rem);padding:4px}
   .fc-scene{height:220px}
   .fc-word{font-size:1.4rem}
 }
@@ -1299,9 +1305,15 @@ input,select{font-family:inherit;outline:none}
             </select>
             <button class="btn-primary" onclick="startMemoryGame()">¡Jugar!</button>
           </div>
+          <div class="mem-pair-selector">
+            <label>Número de pares:</label>
+            <button class="mem-pair-btn active" data-pairs="4" onclick="selectMemPairs(this)">4 pares</button>
+            <button class="mem-pair-btn" data-pairs="6" onclick="selectMemPairs(this)">6 pares</button>
+            <button class="mem-pair-btn" data-pairs="8" onclick="selectMemPairs(this)">8 pares</button>
+          </div>
           <div id="memory-area">
             <div class="memory-stats">
-              <div class="memory-stat"><div class="val" id="mem-pairs">0/8</div><div class="lbl">Pares</div></div>
+              <div class="memory-stat"><div class="val" id="mem-pairs">0/0</div><div class="lbl">Pares</div></div>
               <div class="memory-stat"><div class="val" id="mem-moves">0</div><div class="lbl">Movimientos</div></div>
               <div class="memory-stat"><div class="val" id="mem-timer">0s</div><div class="lbl">Tiempo</div></div>
             </div>
@@ -4679,6 +4691,11 @@ function buildMemSelect() {
   });
 }
 
+function selectMemPairs(btn) {
+  document.querySelectorAll('.mem-pair-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
 function startMemoryGame() {
   const id = parseInt(document.getElementById('mem-module-select').value);
   if (!id) { toast('Selecciona un módulo primero', 'info'); return; }
@@ -4691,10 +4708,21 @@ function startMemoryGame() {
   APP.memMoves = 0;
   APP.memSeconds = 0;
 
-  // BUG FIX 7: handle modules with fewer than 8 vocab words
-  const pairCount = Math.min(8, Math.floor(m.vocab.length));
-  if (pairCount < 2) { toast('Este módulo necesita al menos 2 palabras para el juego', 'info'); return; }
-  const pairs = m.vocab.slice(0, pairCount);
+  // Read pair count from UI selector (default 4 if none active)
+  const activeBtn = document.querySelector('.mem-pair-btn.active');
+  const targetPairs = activeBtn ? parseInt(activeBtn.dataset.pairs) : 4;
+  // Columns: 4 pairs → 2 cols, 6 pairs → 3 cols, 8 pairs → 4 cols
+  const memCols = targetPairs === 4 ? 2 : targetPairs === 6 ? 3 : 4;
+
+  // Build bank: up to 12 pairs from module vocab
+  const bank = m.vocab.slice(0, 12);
+  if (bank.length < 2) { toast('Este módulo necesita al menos 2 palabras para el juego', 'info'); return; }
+
+  // Randomly select targetPairs from the bank (or all if bank is smaller)
+  const pairCount = Math.min(targetPairs, bank.length);
+  const shuffledBank = bank.slice().sort(() => Math.random() - 0.5);
+  const pairs = shuffledBank.slice(0, pairCount);
+
   const cards = [];
   pairs.forEach((v, i) => {
     cards.push({pairId:i, type:'en', text:v.en});
@@ -4702,6 +4730,8 @@ function startMemoryGame() {
   });
   cards.sort(() => Math.random() - 0.5);
   APP.memCards = cards.map((c,idx) => ({...c, idx, revealed:false, matched:false}));
+  APP.memTotal = pairCount;
+  APP.memCols = memCols;
 
   document.getElementById('memory-area').style.display = 'block';
   document.getElementById('memory-win').style.display = 'none';
@@ -4719,6 +4749,9 @@ function startMemoryGame() {
 function renderMemGrid() {
   const grid = document.getElementById('memory-grid');
   grid.innerHTML = '';
+  // Apply responsive column count via CSS variable
+  const cols = APP.memCols || 4;
+  grid.style.setProperty('--mem-cols', cols);
   APP.memCards.forEach((c, i) => {
     const el = document.createElement('div');
     el.className = 'mem-card' + (c.revealed||c.matched ? ' flipped':'') + (c.matched ? ' matched':'');
@@ -4729,7 +4762,8 @@ function renderMemGrid() {
     el.onclick = () => memClick(i);
     grid.appendChild(el);
   });
-  document.getElementById('mem-pairs').textContent = `${APP.memMatched}/8`;
+  const total = APP.memTotal || 8;
+  document.getElementById('mem-pairs').textContent = `${APP.memMatched}/${total}`;
   document.getElementById('mem-moves').textContent = APP.memMoves;
 }
 
@@ -4758,7 +4792,7 @@ function memClick(idx) {
         APP.memMatched++;
         memLocked = false;
         renderMemGrid();
-        if (APP.memMatched === 8) memWin();
+        if (APP.memMatched === (APP.memTotal || 8)) memWin();
       }, 500);
     } else {
       // Wrong pair: play a brief low-tone indicator
