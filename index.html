@@ -2706,7 +2706,7 @@ function renderReviewCard() {
   const card = document.getElementById('smart-review-card');
   if (!card) return;
   // If user dismissed the card this session, keep it hidden
-  if (sessionStorage.getItem('reviewDismissed') === '1') {
+  if (localStorage.getItem('reviewDismissed') === '1') {
     card.style.display = 'none';
     return;
   }
@@ -2746,7 +2746,7 @@ function renderReviewCard() {
 
 function dismissReviewCard() {
   document.getElementById('smart-review-card').style.display = 'none';
-  sessionStorage.setItem('reviewDismissed', '1');
+  localStorage.setItem('reviewDismissed', '1');
 }
 
 function pickOption(idx, moduleId) {
