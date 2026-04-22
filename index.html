@@ -3058,6 +3058,7 @@ function buildRecognition() {
 
   sr.onend = () => {
     micActive = false;
+    micPermissionGranted = true; // if we got here, mic was accessible
     const btn = document.getElementById('btn-mic');
     if (btn) btn.classList.remove('listening');
   };
@@ -3065,7 +3066,7 @@ function buildRecognition() {
   return sr;
 }
 
-async function toggleMic() {
+function toggleMic() {
   const SRApi = window.SpeechRecognition || window.webkitSpeechRecognition;
   const fb = document.getElementById('mic-feedback');
   const btn = document.getElementById('btn-mic');
@@ -3087,17 +3088,9 @@ async function toggleMic() {
 
   if (APP.fcIndex >= APP.fcCards.length) return;
 
-  // Request permission ONCE — after this the browser remembers it
-  if (!micPermissionGranted) {
-    if (fb) { fb.textContent = '🎤 Solicitando permiso de micrófono...'; fb.style.color = 'var(--primary)'; }
-    const granted = await requestMicPermissionOnce();
-    if (!granted) {
-      if (fb) { fb.textContent = '⛔ Permiso denegado. Activa el micrófono en tu navegador.'; fb.style.color = 'var(--danger)'; }
-      return;
-    }
-  }
-
-  // Always build a fresh recognition object (browsers require this)
+  // Build a fresh recognition object — SpeechRecognition.start() handles its own
+  // permission prompt natively on mobile, keeping us within the user-gesture window.
+  // Using await before start() breaks the gesture chain on iOS/Android.
   micRecognition = buildRecognition();
   if (!micRecognition) return;
 
