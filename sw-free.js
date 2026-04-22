@@ -20,14 +20,14 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request)
-      .then(r => r || fetch(e.request)
-        .then(res => {
-          const clone = res.clone();
-          caches.open(CACHE)
-            .then(c => c.put(e.request, clone));
-          return res;
-        })
-      ).catch(() => caches.match('/'))
+    caches.match(e.request).then(cached => {
+      if (cached) return cached;
+      return fetch(e.request).then(response => {
+        const clone = response.clone();
+        caches.open(CACHE)
+          .then(c => c.put(e.request, clone));
+        return response;
+      });
+    }).catch(() => caches.match('/'))
   );
 });
