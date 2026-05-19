@@ -1,4 +1,4 @@
-const CACHE = 'v12';
+const CACHE = 'v13';
 const FILES = ['/'];
 
 self.addEventListener('install', e => {
