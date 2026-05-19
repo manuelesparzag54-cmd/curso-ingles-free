@@ -2439,7 +2439,10 @@ function showQuestion(m) {
     const btn = document.getElementById('btn-quiz-speak');
     if (btn) {
       const correctAnswer = q.opts[q.correct];
-      btn.addEventListener('click', (e) => speak(correctAnswer, e.currentTarget));
+      const fullSentence = q.q.includes('___')
+        ? cleanTextForSpeech(q.q.replace('___', correctAnswer))
+        : correctAnswer;
+      btn.addEventListener('click', (e) => speak(fullSentence, e.currentTarget));
     }
   }
   // Show streak indicator if there's an active streak from previous question
