@@ -2794,10 +2794,12 @@ function pickOption(idx, moduleId) {
     quizSpeakBtn.click();
   }
 
+  const expText = q.exp || `La respuesta correcta es: "${q.opts[q.correct]}"`;
+  const expDiv = document.createElement('div');
+
   if (idx === q.correct) {
     btns[idx].classList.add('correct');
     APP.quizScore++;
-    // Streak: correct answer
     APP.quizStreak++;
     if (APP.quizStreak > APP.quizBestStreak) APP.quizBestStreak = APP.quizStreak;
     updateStreakIndicator();
@@ -2807,38 +2809,32 @@ function pickOption(idx, moduleId) {
     } else {
       playCorrectSound();
     }
-    // Reduce error count for this word in the smart review card
     const correctWord = q.opts[q.correct];
     if (correctWord && APP.wordErrors && APP.wordErrors[correctWord]) {
       APP.wordErrors[correctWord]--;
-      if (APP.wordErrors[correctWord] <= 0) {
-        delete APP.wordErrors[correctWord];
-      }
-      saveWordErrors();
-      saveApp();
-      renderReviewCard();
+      if (APP.wordErrors[correctWord] <= 0) delete APP.wordErrors[correctWord];
+      saveWordErrors(); saveApp(); renderReviewCard();
     }
-    setTimeout(() => advanceQuiz(m), 1300);
+    expDiv.style.cssText = 'margin-top:12px;padding:10px 14px;background:rgba(16,185,129,0.1);border-left:3px solid var(--success);border-radius:6px;font-size:0.88rem;color:var(--text);line-height:1.5';
+    expDiv.innerHTML = `<strong>✅ ¡Correcto!</strong> ${expText}
+      <div style="margin-top:10px;text-align:right">
+        <button class="btn-primary" style="padding:6px 18px;font-size:0.88rem;background:var(--success);border-color:var(--success)" onclick="advanceQuiz(MODULES.find(x=>x.id===${m.id}))">Siguiente →</button>
+      </div>`;
   } else {
     btns[idx].classList.add('wrong');
     btns[q.correct].classList.add('correct');
-    // Streak: wrong answer — reset silently
     APP.quizStreak = 0;
-    // Track this word as failed for the smart review card
     const missedWord = q.opts[q.correct];
     APP.wordErrors[missedWord] = (APP.wordErrors[missedWord] || 0) + 1;
     saveWordErrors();
-    console.log('[review] error registrado:', missedWord, '— total:', APP.wordErrors[missedWord]);
     playWrongSound();
-    const expText = q.exp || `La respuesta correcta es: "${q.opts[q.correct]}"`;
-    const expDiv = document.createElement('div');
-    expDiv.style.cssText = 'margin-top:12px;padding:10px 14px;background:var(--danger,#e74c3c)22;border-left:3px solid var(--danger,#e74c3c);border-radius:6px;font-size:0.88rem;color:var(--text,#333);line-height:1.5';
+    expDiv.style.cssText = 'margin-top:12px;padding:10px 14px;background:var(--danger,#e74c3c)22;border-left:3px solid var(--danger,#e74c3c);border-radius:6px;font-size:0.88rem;color:var(--text);line-height:1.5';
     expDiv.innerHTML = `<strong>💡 Explicación:</strong> ${expText}
       <div style="margin-top:10px;text-align:right">
         <button class="btn-primary" style="padding:6px 18px;font-size:0.88rem" onclick="advanceQuiz(MODULES.find(x=>x.id===${m.id}))">Siguiente →</button>
       </div>`;
-    document.querySelector('.options-grid').after(expDiv);
   }
+  document.querySelector('.options-grid').after(expDiv);
 }
 
 function advanceQuiz(m) {
