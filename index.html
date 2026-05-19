@@ -234,9 +234,7 @@ input,select{font-family:inherit;outline:none}
 #btn-start-quiz:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.4)}
 #quiz-container{display:none;padding:8px 4px}
 .quiz-progress-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:0.85rem;color:var(--text2)}
-.timer-bar-wrap{height:8px;background:var(--border);border-radius:4px;margin-bottom:16px;overflow:hidden}
-.timer-bar{height:100%;background:linear-gradient(90deg,var(--success),#34d399);border-radius:4px;transition:width 1s linear,background 0.5s}
-.timer-bar.urgent{background:linear-gradient(90deg,var(--danger),#f87171)}
+/* timer-bar styles removed */
 .question-text{font-size:1.2rem;font-weight:700;margin-bottom:24px;line-height:1.5;color:var(--primary)}
 .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
 .option-btn{
@@ -1762,7 +1760,13 @@ Negación: won't + verb / isn't going to + verb`,
       {q:'"Ya tengo el boleto → ___ fly to Paris"',opts:['I will','I am going to','I would','I should'],correct:1,exp:'"Going to" expresa planes previos o intenciones ya decididas. Tener el boleto indica un plan concreto.'},
       {q:'"¡El teléfono suena! → I ___ answer it"',opts:['am going to','will','would','shall'],correct:1,exp:'"Will" expresa decisiones espontáneas tomadas en el momento: el teléfono suena → decido contestarlo ahora.'},
       {q:'"próxima semana" en inglés:',opts:['this week','last week','next week','every week'],correct:2,exp:'"Next week" = próxima semana. "Last week" = semana pasada, "this week" = esta semana.'},
-      {q:'Estructura correcta de "Going to":',opts:['will+going to+verb','am/is/are+going to+verb','have+going to+verb','did+going to+verb'],correct:1,exp:'La estructura es: am/is/are + going to + verbo base. Ejemplo: "I am going to travel", "She is going to study".'}
+      {q:'Estructura correcta de "Going to":',opts:['will+going to+verb','am/is/are+going to+verb','have+going to+verb','did+going to+verb'],correct:1,exp:'La estructura es: am/is/are + going to + verbo base. Ejemplo: "I am going to travel", "She is going to study".'},
+      {q:'"mañana" (el día siguiente) en inglés:',opts:['yesterday','today','tonight','tomorrow'],correct:3,exp:'"Tomorrow" = mañana (el día siguiente). "Yesterday" = ayer, "today" = hoy, "tonight" = esta noche.'},
+      {q:'"I ___ study English next year."',opts:['am going to','went','did','was'],correct:0,exp:'"Am going to" expresa un plan o intención ya decidida: "I am going to study" = voy a estudiar.'},
+      {q:'"Won\'t" es la forma negativa de:',opts:['would','going to','will','should'],correct:2,exp:'"Won\'t" = "will not". Se usa para el futuro negativo: "I won\'t come" = no vendré.'},
+      {q:'"She ___ to be a doctor." (quiere serlo en el futuro)',opts:['is going to','went','did','was'],correct:0,exp:'"Is going to" expresa una intención o plan: "She is going to be a doctor" = ella va a ser médico.'},
+      {q:'"Pronto" en inglés:',opts:['never','always','soon','already'],correct:2,exp:'"Soon" = pronto / en breve. "I will call you soon" = te llamaré pronto.'},
+      {q:'"Este fin de semana" en inglés:',opts:['last weekend','every weekend','next weekend','this weekend'],correct:3,exp:'"This weekend" = este fin de semana. "Next weekend" = el próximo, "last weekend" = el pasado.'}
     ]
   },
   {
@@ -1793,7 +1797,13 @@ Pregunta: Have/Has + sujeto + participio?
       {q:'"Dobla a la derecha" en inglés:',opts:['Go straight','Turn left','Turn right','On the corner'],correct:2,exp:'"Turn right" = dobla a la derecha. "Turn left" = dobla a la izquierda. "Go straight" = sigue recto.'},
       {q:'"en avión" en inglés:',opts:['by car','by train','by plane','on foot'],correct:2,exp:'"By plane" = en avión. "By car" = en coche, "by train" = en tren, "on foot" = a pie.'},
       {q:'Estructura del Presente Perfecto:',opts:['did + verb','was + verb','have/has + participle','will + verb'],correct:2,exp:'El Presente Perfecto usa "have/has + participio pasado": "I have visited", "She has eaten", "They have gone".'},
-      {q:'"Have you ever ___ Paris?"',opts:['visit','visited','visiting','visits'],correct:1,exp:'En el Presente Perfecto se usa el participio pasado: "visited" (no "visit"). Irregular: go → gone, see → seen.'}
+      {q:'"Have you ever ___ Paris?"',opts:['visit','visited','visiting','visits'],correct:1,exp:'En el Presente Perfecto se usa el participio pasado: "visited" (no "visit"). Irregular: go → gone, see → seen.'},
+      {q:'"Aeropuerto" en inglés:',opts:['train station','bus stop','airport','hotel'],correct:2,exp:'"Airport" = aeropuerto. "Train station" = estación de tren, "bus stop" = parada de autobús.'},
+      {q:'"Pasaporte" en inglés:',opts:['ticket','luggage','visa','passport'],correct:3,exp:'"Passport" = pasaporte. Documento obligatorio para viajar internacionalmente.'},
+      {q:'"Turn left" significa:',opts:['Sigue recto','Para aquí','Gira a la derecha','Gira a la izquierda'],correct:3,exp:'"Left" = izquierda, "right" = derecha. "Turn left" = gira a la izquierda.'},
+      {q:'"The flight is delayed" significa:',opts:['El vuelo fue cancelado','El vuelo llegó a tiempo','El vuelo está retrasado','El vuelo salió'],correct:2,exp:'"Delayed" = retrasado. Muy útil saberlo en aeropuertos y estaciones.'},
+      {q:'"By train" significa:',opts:['En avión','En coche','En barco','En tren'],correct:3,exp:'"By + medio de transporte" indica cómo viajas. "By train" = en tren.'},
+      {q:'"I have never ___ sushi."',opts:['eat','eats','ate','eaten'],correct:3,exp:'Con "have/has never/ever" se usa el participio: "eaten". Irregular: eat → ate → eaten.'}
     ]
   },
   {
@@ -1827,7 +1837,13 @@ Gerundio como hobby:
       {q:'Comparativo de "big":',opts:['more big than','the biggest','bigger than','big than'],correct:2,exp:'Adjetivos cortos (1 sílaba) usan -er: "bigger than". Si termina en consonante+vocal+consonante, se dobla: big → bigger.'},
       {q:'Superlativo de "interesting":',opts:['most interesting','the most interesting','interestingest','more interesting'],correct:1,exp:'Adjetivos largos (2+ sílabas) usan "the most + adjetivo": "the most interesting", "the most expensive".'},
       {q:'Comparativo de "good":',opts:['gooder','more good','better than','the best'],correct:2,exp:'"Good" es irregular: good → better than → the best. No se dice "gooder" ni "more good".'},
-      {q:'"programador/a" en inglés:',opts:['designer','engineer','programmer','architect'],correct:2,exp:'"Programmer" = programador/a. "Designer" = diseñador/a, "engineer" = ingeniero/a, "architect" = arquitecto/a.'}
+      {q:'"programador/a" en inglés:',opts:['designer','engineer','programmer','architect'],correct:2,exp:'"Programmer" = programador/a. "Designer" = diseñador/a, "engineer" = ingeniero/a, "architect" = arquitecto/a.'},
+      {q:'"What do you do?" pregunta:',opts:['¿Cómo estás?','¿Dónde vives?','¿A qué te dedicas?','¿Cuántos años tienes?'],correct:2,exp:'Esta pregunta pregunta por la profesión u ocupación de alguien.'},
+      {q:'"I work from Monday to Friday" significa:',opts:['Trabajo los fines de semana','Trabajo de lunes a viernes','Trabajo solo los lunes','No trabajo'],correct:1,exp:'"From... to..." = de... a... Indica el rango de días laborales.'},
+      {q:'"She is ___ engineer."',opts:['the','a','an','—'],correct:2,exp:'Usamos "an" antes de sonido vocálico: "an engineer", "an apple", "an hour".'},
+      {q:'Superlativo de "bad":',opts:['baddest','more bad','the worst','worse than'],correct:2,exp:'"Bad" es irregular: bad → worse than → the worst. No se dice "baddest" ni "more bad".'},
+      {q:'"I like ___." (nadar, como hobby)',opts:['swim','swam','swimming','to swam'],correct:2,exp:'Después de "like/love/enjoy" el verbo va en gerundio (-ing): "I like swimming".'},
+      {q:'"Diseñador/a" en inglés:',opts:['engineer','programmer','lawyer','designer'],correct:3,exp:'"Designer" = diseñador/a. "Engineer" = ingeniero/a, "programmer" = programador/a.'}
     ]
   },
   {
@@ -1858,7 +1874,13 @@ Gerundio como hobby:
       {q:'"Hermana" en inglés:',opts:['cousin','daughter','sister','aunt'],correct:2,exp:'"Sister" = hermana. "Cousin" = primo/a, "daughter" = hija, "aunt" = tía, "brother" = hermano.'},
       {q:'"Aeropuerto" en inglés:',opts:['train station','bus stop','airport','hotel'],correct:2,exp:'"Airport" = aeropuerto. "Train station" = estación de tren, "bus stop" = parada de autobús.'},
       {q:'"She ___ a nurse. She ___ in a hospital."',opts:['am / work','is / works','are / work','is / work'],correct:1,exp:'Con "she" usamos "is" (verb to be) y "works" (presente simple, 3ra persona singular lleva -s).'},
-      {q:'"Yesterday I ___ (go) to school"',opts:['go','goes','gone','went'],correct:3,exp:'"Yesterday" indica pasado simple. "Go" es irregular: go → went. "Gone" es el participio, no el pasado.'}
+      {q:'"Yesterday I ___ (go) to school"',opts:['go','goes','gone','went'],correct:3,exp:'"Yesterday" indica pasado simple. "Go" es irregular: go → went. "Gone" es el participio, no el pasado.'},
+      {q:'"I ___ visited London." (nunca)',opts:['have never','has never','never have','did never'],correct:0,exp:'"Have never + participio" = nunca he... "I have never visited" = nunca he visitado.'},
+      {q:'¿Cuál es el comparativo de "expensive"?',opts:['expensiver','more expensive','most expensive','the expensive'],correct:1,exp:'Adjetivos largos (3+ sílabas) usan "more": "more expensive". "The most expensive" es el superlativo.'},
+      {q:'"She ___ (work) here for two years."',opts:['worked','has worked','is working','works'],correct:1,exp:'El Presente Perfecto "has worked" indica acción que empezó en el pasado y continúa.'},
+      {q:'"Can you repeat, please?" significa:',opts:['¿Puede hablar más rápido?','¿Puede repetir, por favor?','¿Puede escribirlo?','¿Habla español?'],correct:1,exp:'"Can you repeat?" es esencial para pedir que repitan algo que no entendiste.'},
+      {q:'"I don\'t understand" significa:',opts:['No me gusta','No quiero','No entiendo','No puedo'],correct:2,exp:'"I don\'t understand" = no entiendo. Muy útil cuando no comprendes algo en inglés.'},
+      {q:'"Should" se usa para:',opts:['Hablar del pasado','Dar consejos o recomendaciones','Describir acciones en curso','Hablar del futuro lejano'],correct:1,exp:'"Should" expresa consejo o recomendación: "You should study more" = deberías estudiar más.'}
     ]
   }
 ];
@@ -1880,8 +1902,9 @@ let APP = {
   completed:{}, scores:{}, badges:[],
   voice:{accent:'en-US', speed:1.0, mode:'single'},
   currentModule:null,
-  quizTimer:null, quizQ:0, quizScore:0, quizTimeLeft:30,
+  quizQ:0, quizScore:0,
   quizStreak:0, quizBestStreak:0,
+  quizBank:[], quizMissed:[],
   fcCards:[], fcIndex:0, fcKnown:0, fcFlipped:false,
   memCards:[], memFlipped:[], memMatched:0, memMoves:0,
   memTimerHandle:null, memSeconds:0,
@@ -2125,8 +2148,6 @@ function exitGame(silentReset) {
    LESSON / MODULE
    ============================================================ */
 function loadModule(id) {
-  // BUG FIX 1: always kill any running quiz timer before loading new module
-  clearInterval(APP.quizTimer);
   APP.currentModule = id;
   showTab('curso');
   const m = MODULES.find(x => x.id === id);
@@ -2401,6 +2422,11 @@ function startQuiz(moduleId) {
   APP.quizScore = 0;
   APP.quizStreak = 0;
   APP.quizBestStreak = 0;
+  APP.quizMissed = [];
+  // Seleccionar 6 preguntas aleatorias del banco completo
+  const fullBank = m.quiz;
+  const count = Math.min(6, fullBank.length);
+  APP.quizBank = [...fullBank].sort(() => Math.random() - 0.5).slice(0, count);
   document.getElementById('btn-start-quiz').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
   showQuestion(m);
@@ -2409,11 +2435,8 @@ function startQuiz(moduleId) {
 function showQuestion(m) {
   const qc = document.getElementById('quiz-container');
   qc.style.display = 'block';
-  const q = m.quiz[APP.quizQ];
-  const total = m.quiz.length;
-
-  clearInterval(APP.quizTimer);
-  APP.quizTimeLeft = 30;
+  const q = APP.quizBank[APP.quizQ];
+  const total = APP.quizBank.length;
 
   const rawSpeak = extractEnglishFromQuizQ(q.q);
   const speakText = rawSpeak ? cleanTextForSpeech(rawSpeak) : null;
@@ -2427,10 +2450,6 @@ function showQuestion(m) {
   qc.innerHTML = `
     <div class="quiz-progress-header">
       <span>Pregunta ${APP.quizQ+1} de ${total}</span>
-      <span id="q-timer">${APP.quizTimeLeft}s</span>
-    </div>
-    <div class="timer-bar-wrap">
-      <div class="timer-bar" id="q-timer-bar" style="width:100%"></div>
     </div>
     <div id="quiz-streak-indicator">${streakHTML}</div>
     <div class="question-text" style="display:flex;align-items:flex-start;gap:10px">
@@ -2456,27 +2475,6 @@ function showQuestion(m) {
     const si = document.getElementById('quiz-streak-indicator');
     if (si) si.style.display = 'flex';
   }
-
-  APP.quizTimer = setInterval(() => {
-    APP.quizTimeLeft--;
-    const bar = document.getElementById('q-timer-bar');
-    const tc = document.getElementById('q-timer');
-    if (!bar || !tc) { clearInterval(APP.quizTimer); return; }
-    bar.style.width = ((APP.quizTimeLeft / 30) * 100) + '%';
-    tc.textContent = APP.quizTimeLeft + 's';
-    if (APP.quizTimeLeft <= 10) bar.classList.add('urgent');
-    if (APP.quizTimeLeft <= 0) { clearInterval(APP.quizTimer); timeUp(m); }
-  }, 1000);
-}
-
-function timeUp(m) {
-  const correctIdx = APP.quizShuffledCorrect ?? m.quiz[APP.quizQ].correct;
-  document.querySelectorAll('.option-btn').forEach((b,i) => {
-    b.disabled = true;
-    if (i === correctIdx) b.classList.add('correct');
-  });
-  APP.quizStreak = 0;
-  setTimeout(() => advanceQuiz(m), 1200);
 }
 
 function showXPFloat(xp, perfect) {
@@ -2784,9 +2782,8 @@ function dismissReviewCard() {
 }
 
 function pickOption(idx, moduleId) {
-  clearInterval(APP.quizTimer);
   const m = MODULES.find(x => x.id === moduleId);
-  const q = m.quiz[APP.quizQ];
+  const q = APP.quizBank[APP.quizQ];
   const correctIdx = APP.quizShuffledCorrect ?? q.correct;
   const correctWord = APP.quizShuffledOpts ? APP.quizShuffledOpts[correctIdx] : q.opts[q.correct];
   const btns = document.querySelectorAll('.option-btn');
@@ -2833,6 +2830,7 @@ function pickOption(idx, moduleId) {
     APP.wordErrors[correctWord] = (APP.wordErrors[correctWord] || 0) + 1;
     saveWordErrors();
     playWrongSound();
+    APP.quizMissed.push({ q: q.q, correct: correctWord, exp: q.exp || '' });
     expDiv.style.cssText = 'margin-top:12px;padding:10px 14px;background:var(--danger,#e74c3c)22;border-left:3px solid var(--danger,#e74c3c);border-radius:6px;font-size:0.88rem;color:var(--text);line-height:1.5';
     expDiv.innerHTML = `<strong>💡 Explicación:</strong> ${expText}
       <div style="margin-top:10px;text-align:right">
@@ -2844,13 +2842,12 @@ function pickOption(idx, moduleId) {
 
 function advanceQuiz(m) {
   APP.quizQ++;
-  if (APP.quizQ < m.quiz.length) showQuestion(m);
+  if (APP.quizQ < APP.quizBank.length) showQuestion(m);
   else finishQuiz(m);
 }
 
 function finishQuiz(m) {
-  clearInterval(APP.quizTimer);
-  const total = m.quiz.length;
+  const total = APP.quizBank.length;
   const pct = Math.round((APP.quizScore / total) * 100);
   let xp = 0;
   if (pct >= 50) xp = 50;
@@ -2915,6 +2912,20 @@ function finishQuiz(m) {
       ${m.id < 12 ? `<button class="btn-primary" onclick="loadModule(${m.id+1})">Módulo ${m.id+1} →</button>` : `<button class="btn-primary" onclick="showTab('estadisticas')">Ver estadísticas 📊</button>`}
     </div>
   `;
+  const missedHTML = APP.quizMissed && APP.quizMissed.length > 0
+    ? `<div style="margin-top:20px;text-align:left">
+         <div style="font-weight:700;font-size:0.9rem;color:var(--text2);margin-bottom:10px">Preguntas que fallaste:</div>
+         ${APP.quizMissed.map(item => `
+           <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:0.85rem">
+             <div style="color:var(--text2);margin-bottom:4px">${item.q}</div>
+             <div style="color:var(--success);font-weight:600">Correcto: ${item.correct}</div>
+             ${item.exp ? `<div style="color:var(--text2);font-size:0.8rem;margin-top:4px">${item.exp}</div>` : ''}
+           </div>`).join('')}
+       </div>`
+    : `<div style="margin-top:16px;color:var(--success);font-weight:600;font-size:0.9rem">Sin errores! Perfecto dominio del modulo.</div>`;
+  const errSection = document.createElement('div');
+  errSection.innerHTML = missedHTML;
+  qr.appendChild(errSection);
   if (xp > 0) { playXPSound(pct === 100); showXPFloat(xp, pct === 100); }
   if (pct === 100) launchConfetti();
   if (xp > 0) toast(`✨ +${xp} XP por el quiz!`, 'xp');
@@ -4960,8 +4971,6 @@ function exitReviewMode() {
    ============================================================ */
 function confirmReset() {
   if (confirm('⚠️ ¿Estás seguro de que quieres borrar todo tu progreso?\n\nEsta acción no se puede deshacer.')) {
-    // BUG FIX 11: kill all running timers before reset
-    clearInterval(APP.quizTimer);
     clearInterval(APP.memTimerHandle);
     if (micActive && micRecognition) { try { micRecognition.stop(); } catch(e){} }
     const dark = APP.darkMode;
@@ -4972,7 +4981,7 @@ function confirmReset() {
       completed:{}, scores:{}, badges:[],
       voice:{accent:'en-US', speed:1.0, mode:'single'},
       currentModule:null, quizQ:0, quizScore:0,
-      quizTimer:null, quizTimeLeft:30,
+      quizBank:[], quizMissed:[],
       fcCards:[], fcIndex:0, fcKnown:0, fcFlipped:false, fcXpAwarded:false,
       memCards:[], memFlipped:[], memMatched:0, memMoves:0,
       memTimerHandle:null, memSeconds:0,
