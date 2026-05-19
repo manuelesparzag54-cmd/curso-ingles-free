@@ -2429,7 +2429,7 @@ function showQuestion(m) {
     <div id="quiz-streak-indicator">${streakHTML}</div>
     <div class="question-text" style="display:flex;align-items:flex-start;gap:10px">
       <span>${q.q}</span>
-      ${speakText ? `<button id="btn-quiz-speak" class="btn-speak" title="Escuchar en inglés">🔊</button>` : ''}
+      ${speakText ? `<button id="btn-quiz-speak" class="btn-speak" title="Responde primero para escuchar" disabled style="opacity:0.35">🔊</button>` : ''}
     </div>
     <div class="options-grid">
       ${q.opts.map((o,i) => `<button class="option-btn" onclick="pickOption(${i},${m.id})">${o}</button>`).join('')}
@@ -2437,7 +2437,10 @@ function showQuestion(m) {
   `;
   if (speakText) {
     const btn = document.getElementById('btn-quiz-speak');
-    if (btn) btn.addEventListener('click', (e) => speak(speakText, e.currentTarget));
+    if (btn) {
+      const correctAnswer = q.opts[q.correct];
+      btn.addEventListener('click', (e) => speak(correctAnswer, e.currentTarget));
+    }
   }
   // Show streak indicator if there's an active streak from previous question
   if (streakHTML) {
@@ -2778,6 +2781,16 @@ function pickOption(idx, moduleId) {
   const q = m.quiz[APP.quizQ];
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
+
+  // Unlock speak button and auto-play correct answer
+  const quizSpeakBtn = document.getElementById('btn-quiz-speak');
+  if (quizSpeakBtn) {
+    quizSpeakBtn.disabled = false;
+    quizSpeakBtn.style.opacity = '1';
+    quizSpeakBtn.title = 'Escuchar la respuesta correcta';
+    quizSpeakBtn.click();
+  }
+
   if (idx === q.correct) {
     btns[idx].classList.add('correct');
     APP.quizScore++;
