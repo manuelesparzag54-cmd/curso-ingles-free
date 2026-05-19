@@ -2418,6 +2418,12 @@ function showQuestion(m) {
   const rawSpeak = extractEnglishFromQuizQ(q.q);
   const speakText = rawSpeak ? cleanTextForSpeech(rawSpeak) : null;
   const streakHTML = buildStreakIndicatorHTML();
+
+  // Shuffle options and track new correct index
+  const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
+  APP.quizShuffledOpts = shuffledOpts;
+  APP.quizShuffledCorrect = shuffledOpts.indexOf(q.opts[q.correct]);
+
   qc.innerHTML = `
     <div class="quiz-progress-header">
       <span>Pregunta ${APP.quizQ+1} de ${total}</span>
@@ -2432,7 +2438,7 @@ function showQuestion(m) {
       ${speakText ? `<button id="btn-quiz-speak" class="btn-speak" title="Responde primero para escuchar" disabled style="opacity:0.35">🔊</button>` : ''}
     </div>
     <div class="options-grid">
-      ${q.opts.map((o,i) => `<button class="option-btn" onclick="pickOption(${i},${m.id})">${o}</button>`).join('')}
+      ${shuffledOpts.map((o,i) => `<button class="option-btn" onclick="pickOption(${i},${m.id})">${o}</button>`).join('')}
     </div>
   `;
   if (speakText) {
@@ -2464,12 +2470,11 @@ function showQuestion(m) {
 }
 
 function timeUp(m) {
-  const q = m.quiz[APP.quizQ];
+  const correctIdx = APP.quizShuffledCorrect ?? m.quiz[APP.quizQ].correct;
   document.querySelectorAll('.option-btn').forEach((b,i) => {
     b.disabled = true;
-    if (i === q.correct) b.classList.add('correct');
+    if (i === correctIdx) b.classList.add('correct');
   });
-  // Timeout counts as failure — reset streak silently
   APP.quizStreak = 0;
   setTimeout(() => advanceQuiz(m), 1200);
 }
@@ -2782,6 +2787,8 @@ function pickOption(idx, moduleId) {
   clearInterval(APP.quizTimer);
   const m = MODULES.find(x => x.id === moduleId);
   const q = m.quiz[APP.quizQ];
+  const correctIdx = APP.quizShuffledCorrect ?? q.correct;
+  const correctWord = APP.quizShuffledOpts ? APP.quizShuffledOpts[correctIdx] : q.opts[q.correct];
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
 
@@ -2794,10 +2801,10 @@ function pickOption(idx, moduleId) {
     quizSpeakBtn.click();
   }
 
-  const expText = q.exp || `La respuesta correcta es: "${q.opts[q.correct]}"`;
+  const expText = q.exp || `La respuesta correcta es: "${correctWord}"`;
   const expDiv = document.createElement('div');
 
-  if (idx === q.correct) {
+  if (idx === correctIdx) {
     btns[idx].classList.add('correct');
     APP.quizScore++;
     APP.quizStreak++;
@@ -2809,7 +2816,6 @@ function pickOption(idx, moduleId) {
     } else {
       playCorrectSound();
     }
-    const correctWord = q.opts[q.correct];
     if (correctWord && APP.wordErrors && APP.wordErrors[correctWord]) {
       APP.wordErrors[correctWord]--;
       if (APP.wordErrors[correctWord] <= 0) delete APP.wordErrors[correctWord];
@@ -2822,10 +2828,9 @@ function pickOption(idx, moduleId) {
       </div>`;
   } else {
     btns[idx].classList.add('wrong');
-    btns[q.correct].classList.add('correct');
+    btns[correctIdx].classList.add('correct');
     APP.quizStreak = 0;
-    const missedWord = q.opts[q.correct];
-    APP.wordErrors[missedWord] = (APP.wordErrors[missedWord] || 0) + 1;
+    APP.wordErrors[correctWord] = (APP.wordErrors[correctWord] || 0) + 1;
     saveWordErrors();
     playWrongSound();
     expDiv.style.cssText = 'margin-top:12px;padding:10px 14px;background:var(--danger,#e74c3c)22;border-left:3px solid var(--danger,#e74c3c);border-radius:6px;font-size:0.88rem;color:var(--text);line-height:1.5';
