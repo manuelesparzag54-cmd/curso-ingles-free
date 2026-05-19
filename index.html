@@ -175,10 +175,20 @@ input,select{font-family:inherit;outline:none}
 .vocab-en{font-weight:600;color:var(--primary)}
 .vocab-es{font-size:0.85rem;color:var(--text2)}
 .btn-speak{
-  background:none;border:none;color:var(--primary);
-  font-size:1rem;padding:2px 4px;border-radius:4px;flex-shrink:0;
+  background:var(--surface2);border:1.5px solid var(--border);color:var(--primary);
+  width:34px;height:34px;border-radius:50%;font-size:1rem;padding:0;flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:var(--transition);cursor:pointer;
 }
-.btn-speak:hover{background:var(--surface);color:var(--primary-dark)}
+.btn-speak:hover{border-color:var(--primary);background:rgba(200,16,46,0.08);transform:scale(1.08)}
+.btn-speak.speaking{
+  border-color:var(--primary);background:rgba(200,16,46,0.12);
+  animation:speakPulse 0.8s ease-in-out infinite;
+}
+@keyframes speakPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,0.35)}
+  50%{box-shadow:0 0 0 6px rgba(200,16,46,0)}
+}
 
 /* Grammar */
 .grammar-box{background:linear-gradient(135deg,#EEF2FF,#E8EEF8);border:1px solid #C8D8F0;border-radius:8px;padding:16px}
@@ -389,6 +399,7 @@ input,select{font-family:inherit;outline:none}
 .fi-sentence {
   font-size: 1rem; font-weight: 600; color: var(--text);
   line-height: 2.2; margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
 .fi-hint { font-size: 0.78rem; color: var(--text2); margin-top: 4px; margin-bottom: 12px; }
 .fi-blank { display: inline-block; min-width: 80px; border-bottom: 2px solid var(--primary); padding: 0 6px; color: var(--primary); font-style: italic; }
@@ -649,9 +660,13 @@ input,select{font-family:inherit;outline:none}
   background:var(--surface2);border:2px solid var(--border);
   color:var(--primary);padding:6px 14px;border-radius:8px;
   font-size:0.82rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;
-  transition:var(--transition);
+  transition:var(--transition);cursor:pointer;
 }
 .btn-grammar-speak:hover{border-color:var(--primary);background:rgba(200,16,46,0.06)}
+.btn-grammar-speak.speaking{
+  border-color:var(--primary);background:rgba(200,16,46,0.10);
+  animation:speakPulse 0.8s ease-in-out infinite;
+}
 .btn-grammar-stop{
   background:rgba(200,16,46,0.1);border:2px solid var(--primary);
   color:var(--primary);padding:6px 14px;border-radius:8px;
@@ -672,12 +687,16 @@ input,select{font-family:inherit;outline:none}
   line-height:1.7;white-space:pre-wrap;flex:1;
 }
 .btn-speak-line{
-  background:none;border:none;color:var(--text2);
-  font-size:0.85rem;padding:2px 4px;border-radius:4px;
-  flex-shrink:0;opacity:0.5;transition:var(--transition);
-  margin-top:2px;
+  background:none;border:1.5px solid transparent;color:var(--text2);
+  width:28px;height:28px;border-radius:50%;font-size:0.82rem;padding:0;
+  flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
+  transition:var(--transition);margin-top:2px;cursor:pointer;
 }
-.btn-speak-line:hover{opacity:1;color:var(--primary)}
+.btn-speak-line:hover{border-color:var(--border);color:var(--primary);background:rgba(200,16,46,0.06)}
+.btn-speak-line.speaking{
+  border-color:var(--primary);color:var(--primary);
+  animation:speakPulse 0.8s ease-in-out infinite;
+}
 
 /* Empty state */
 .empty-area{text-align:center;padding:40px 20px;color:var(--text2)}
@@ -1069,17 +1088,21 @@ input,select{font-family:inherit;outline:none}
 .conv-bubble-a-wrap {
   display: flex; align-items: flex-end; gap: 6px;
 }
+.conv-bubble-b-wrap {
+  display: flex; align-items: flex-end; gap: 6px; justify-content: flex-end;
+}
 .conv-speak-btn {
-  background: rgba(255,255,255,0.55);
-  border: 2px solid rgba(255,255,255,0.8); color: #012169;
+  background: var(--surface);
+  border: 2px solid var(--primary); color: var(--primary);
   width: 36px; height: 36px; border-radius: 50%;
   font-size: 1rem; cursor: pointer; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   transition: background 0.2s, transform 0.1s;
   margin-bottom: 0; font-style: normal;
 }
-.conv-speak-btn:hover { background: rgba(255,255,255,0.85); transform: scale(1.1); }
+.conv-speak-btn:hover { background: rgba(200,16,46,0.08); transform: scale(1.1); }
 .conv-speak-btn:active { transform: scale(0.95); }
+.conv-speak-btn.speaking { background: rgba(255,255,255,0.9); animation: speakPulse 0.8s ease-in-out infinite; }
 
 </style>
 </head>
@@ -1233,7 +1256,7 @@ input,select{font-family:inherit;outline:none}
             <div class="fc-face fc-back">
               <div class="fc-translation" id="fc-translation">...</div>
               <div class="fc-pronunciation" id="fc-pronunciation">Pronunciación</div>
-              <button class="btn-speak" onclick="speakFCWord(event)" style="font-size:1.2rem;padding:4px 10px" title="Escuchar">🔊</button>
+              <button class="btn-speak" onclick="speakFCWord(event)" title="Escuchar">🔊</button>
             </div>
           </div>
         </div>
@@ -2130,10 +2153,10 @@ function loadModule(id) {
       <h3>📝 Gramática y Notas</h3>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px">
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn-grammar-speak" id="btn-speak-all-${id}" onclick="speakGrammar(${id}, 'all')" title="Escuchar toda la gramática">
+          <button class="btn-grammar-speak" id="btn-speak-all-${id}" onclick="speakGrammar(${id}, 'all', event)" title="Escuchar toda la gramática">
             🔊 Escuchar todo
           </button>
-          <button class="btn-grammar-speak" id="btn-speak-slow-${id}" onclick="speakGrammar(${id}, 'slow')" title="Escuchar despacio">
+          <button class="btn-grammar-speak" id="btn-speak-slow-${id}" onclick="speakGrammar(${id}, 'slow', event)" title="Escuchar despacio">
             🐢 Despacio
           </button>
           <button class="btn-grammar-stop" id="btn-speak-stop-${id}" onclick="stopGrammarSpeech()" title="Parar" style="display:none">
@@ -2170,7 +2193,7 @@ function loadModule(id) {
         <div class="vocab-es">${v.es}</div>
       </div>
       <button class="btn-speak" title="Escuchar">🔊</button>`;
-    item.querySelector('.btn-speak').addEventListener('click', () => speak(v.en));
+    item.querySelector('.btn-speak').addEventListener('click', (e) => speak(v.en, e.currentTarget));
     vg.appendChild(item);
   });
 
@@ -2211,10 +2234,10 @@ function loadModule(id) {
         speakBtn.className = 'btn-speak-line';
         speakBtn.title = 'Escuchar en inglés';
         speakBtn.textContent = '🔊';
-        speakBtn.addEventListener('click', () => {
+        speakBtn.addEventListener('click', (e) => {
           stopGrammarSpeech();
           highlightGrammarLine(id, i);
-          speak(englishPart);
+          speak(englishPart, e.currentTarget);
         });
         div.appendChild(speakBtn);
       }
@@ -2406,7 +2429,7 @@ function showQuestion(m) {
     <div id="quiz-streak-indicator">${streakHTML}</div>
     <div class="question-text" style="display:flex;align-items:flex-start;gap:10px">
       <span>${q.q}</span>
-      ${speakText ? `<button id="btn-quiz-speak" title="Escuchar en inglés" style="flex-shrink:0;background:none;border:none;font-size:1.3rem;cursor:pointer;padding:0;line-height:1;opacity:0.75">🔊</button>` : ''}
+      ${speakText ? `<button id="btn-quiz-speak" class="btn-speak" title="Escuchar en inglés">🔊</button>` : ''}
     </div>
     <div class="options-grid">
       ${q.opts.map((o,i) => `<button class="option-btn" onclick="pickOption(${i},${m.id})">${o}</button>`).join('')}
@@ -2414,7 +2437,7 @@ function showQuestion(m) {
   `;
   if (speakText) {
     const btn = document.getElementById('btn-quiz-speak');
-    if (btn) btn.addEventListener('click', () => speak(speakText));
+    if (btn) btn.addEventListener('click', (e) => speak(speakText, e.currentTarget));
   }
   // Show streak indicator if there's an active streak from previous question
   if (streakHTML) {
@@ -2706,7 +2729,7 @@ function renderReviewCard() {
   const card = document.getElementById('smart-review-card');
   if (!card) return;
   // If user dismissed the card this session, keep it hidden
-  if (localStorage.getItem('reviewDismissed') === '1') {
+  if (sessionStorage.getItem('reviewDismissed') === '1') {
     card.style.display = 'none';
     return;
   }
@@ -2736,7 +2759,7 @@ function renderReviewCard() {
       <button class="btn-speak" title="Escuchar pronunciación">🔊</button>
       ${badgeHtml}
     `;
-    item.querySelector('.btn-speak').addEventListener('click', () => speak(word));
+    item.querySelector('.btn-speak').addEventListener('click', (e) => speak(word, e.currentTarget));
     list.appendChild(item);
   });
 
@@ -2746,7 +2769,7 @@ function renderReviewCard() {
 
 function dismissReviewCard() {
   document.getElementById('smart-review-card').style.display = 'none';
-  localStorage.setItem('reviewDismissed', '1');
+  sessionStorage.setItem('reviewDismissed', '1');
 }
 
 function pickOption(idx, moduleId) {
@@ -2948,7 +2971,7 @@ function flipCard() {
 }
 function speakFCWord(e) {
   e.stopPropagation();
-  if (APP.fcIndex < APP.fcCards.length) speak(APP.fcCards[APP.fcIndex].en);
+  if (APP.fcIndex < APP.fcCards.length) speak(APP.fcCards[APP.fcIndex].en, e.currentTarget);
 }
 function prevCard() { if (APP.fcIndex > 0) { APP.fcIndex--; renderFC(); } }
 function nextCard() { APP.fcIndex < APP.fcCards.length - 1 ? (APP.fcIndex++, renderFC()) : showFCResult(); }
@@ -4554,7 +4577,10 @@ function renderFillQuestion(idx) {
   container.innerHTML = `
     <div class="fi-progress">Pregunta ${idx + 1} de ${total}</div>
     <div class="fi-question" id="fi-current-question">
-      <div class="fi-sentence">${sentenceHTML}</div>
+      <div class="fi-sentence">
+        <span>${sentenceHTML}</span>
+        <button class="btn-speak" id="fi-speak-btn" title="Escuchar la oración">🔊</button>
+      </div>
       <div class="fi-hint">💡 Pista: ${q.hint}</div>
       <div class="fi-options">
         ${allOptions.map((opt, oi) => `
@@ -4570,6 +4596,14 @@ function renderFillQuestion(idx) {
     </div>
   `;
   fillInputState.answered = false;
+  const fiSpeakBtn = document.getElementById('fi-speak-btn');
+  if (fiSpeakBtn) {
+    const sentenceText = q.sentence.replace('___', q.answer);
+    fiSpeakBtn.disabled = true;
+    fiSpeakBtn.style.opacity = '0.35';
+    fiSpeakBtn.title = 'Responde primero para escuchar';
+    fiSpeakBtn.addEventListener('click', (e) => speak(sentenceText, e.currentTarget));
+  }
 }
 
 /** Handle clicking a multiple-choice option */
@@ -4599,6 +4633,15 @@ function onFillOptionClick(clickedIdx, isCorrect, correctIdx) {
     correctBtn.classList.add('fi-correct');  // highlight correct answer
     fillInputState.streak = 0;
     playWrongSound();
+  }
+
+  // Unlock speak button and auto-play correct sentence
+  const fiSpeakBtn = document.getElementById('fi-speak-btn');
+  if (fiSpeakBtn) {
+    fiSpeakBtn.disabled = false;
+    fiSpeakBtn.style.opacity = '1';
+    fiSpeakBtn.title = 'Escuchar la oración';
+    fiSpeakBtn.click();
   }
 
   // Show the Next button
@@ -5021,7 +5064,7 @@ function cleanSpanishFromText(text) {
   return text.length > 1 ? text : '';
 }
 
-function speakGrammar(moduleId, mode) {
+function speakGrammar(moduleId, mode, ev) {
   const m = MODULES.find(x => x.id === moduleId);
   if (!m) return;
   stopGrammarSpeech();
@@ -5041,6 +5084,10 @@ function speakGrammar(moduleId, mode) {
 
   grammarSpeechQueue = speakableLines;
   grammarSpeaking = true;
+
+  // Mark the triggering grammar-speak button as active
+  const triggerBtn = ev && ev.currentTarget;
+  if (triggerBtn) triggerBtn.classList.add('speaking');
 
   const stopBtn = document.getElementById(`btn-speak-stop-${moduleId}`);
   if (stopBtn) stopBtn.style.display = 'inline-flex';
@@ -5086,6 +5133,7 @@ function stopGrammarSpeech() {
   if (wasSpeaking) {
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     document.querySelectorAll('.grammar-line.speaking').forEach(el => el.classList.remove('speaking'));
+    document.querySelectorAll('.btn-grammar-speak.speaking').forEach(el => el.classList.remove('speaking'));
     if (currentGrammarModuleId) {
       const stopBtn = document.getElementById(`btn-speak-stop-${currentGrammarModuleId}`);
       if (stopBtn) stopBtn.style.display = 'none';
@@ -5094,19 +5142,45 @@ function stopGrammarSpeech() {
 }
 
 
-function speak(text) {
+function speak(text, btn) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  const doIt = (rate) => {
+
+  // Clear any previously active speaking button
+  document.querySelectorAll('.btn-speak.speaking, .btn-speak-line.speaking, .btn-grammar-speak.speaking, .conv-speak-btn.speaking').forEach(el => {
+    el.classList.remove('speaking');
+    if (el.dataset.origIcon) { el.textContent = el.dataset.origIcon; delete el.dataset.origIcon; }
+  });
+
+  // Mark the triggering button as speaking
+  if (btn) {
+    btn.classList.add('speaking');
+    btn.dataset.origIcon = btn.textContent.trim();
+    btn.textContent = '⏹';
+  }
+
+  const restoreBtn = () => {
+    if (btn) {
+      btn.classList.remove('speaking');
+      if (btn.dataset.origIcon) { btn.textContent = btn.dataset.origIcon; delete btn.dataset.origIcon; }
+    }
+  };
+
+  const doIt = (rate, onDone) => {
     const u = new SpeechSynthesisUtterance(text);
     u.lang = APP.voice.accent;
     u.rate = rate;
     u.pitch = 1;
+    u.onend = onDone || restoreBtn;
+    u.onerror = restoreBtn;
     window.speechSynthesis.speak(u);
   };
+
   if (APP.voice.mode === 'single') doIt(APP.voice.speed);
   else if (APP.voice.mode === 'slow') doIt(APP.voice.speed * 0.6);
-  else if (APP.voice.mode === 'repeat') { doIt(APP.voice.speed); setTimeout(() => doIt(APP.voice.speed), 1600); }
+  else if (APP.voice.mode === 'repeat') {
+    doIt(APP.voice.speed, () => setTimeout(() => doIt(APP.voice.speed), 1600));
+  }
 }
 
 /* ============================================================
@@ -5410,19 +5484,31 @@ function renderConvDialog() {
       speakBtn.className = 'conv-speak-btn';
       speakBtn.title = 'Pronunciar';
       speakBtn.textContent = '🔊';
-      speakBtn.onclick = (e) => { e.stopPropagation(); speak(msg.text); };
+      speakBtn.onclick = (e) => { e.stopPropagation(); speak(msg.text, e.currentTarget); };
       bubbleWrap.appendChild(bubble);
       bubbleWrap.appendChild(speakBtn);
       wrap.appendChild(name);
       wrap.appendChild(bubbleWrap);
     } else {
+      const bubbleWrap = document.createElement('div');
+      bubbleWrap.className = 'conv-bubble-b-wrap';
       const bubble = document.createElement('div');
       bubble.className = `conv-bubble conv-bubble-${msg.speaker.toLowerCase()}`;
+      bubble.id = 'conv-bubble-b';
       bubble.innerHTML = msg.text === '___'
         ? '<span class="conv-blank">_ _ _</span>'
         : msg.text;
+      const speakBtn = document.createElement('button');
+      speakBtn.className = 'conv-speak-btn';
+      speakBtn.id = 'conv-speak-b';
+      speakBtn.title = 'Responde primero para escuchar';
+      speakBtn.textContent = '🔊';
+      speakBtn.disabled = true;
+      speakBtn.style.opacity = '0.35';
+      bubbleWrap.appendChild(speakBtn);
+      bubbleWrap.appendChild(bubble);
       wrap.appendChild(name);
-      wrap.appendChild(bubble);
+      wrap.appendChild(bubbleWrap);
     }
     chat.appendChild(wrap);
   });
@@ -5486,6 +5572,18 @@ function selectConvOptionByText(chosenText, correctText, explanation) {
     if (btn.textContent === correctText) btn.classList.add('correct');
     else if (btn.textContent === chosenText && !isCorrect) btn.classList.add('wrong');
   });
+
+  // Reveal correct answer in speaker B bubble and unlock speak button
+  const bubbleB = document.getElementById('conv-bubble-b');
+  if (bubbleB) bubbleB.textContent = correctText;
+  const speakB = document.getElementById('conv-speak-b');
+  if (speakB) {
+    speakB.disabled = false;
+    speakB.style.opacity = '1';
+    speakB.title = 'Escuchar la respuesta';
+    speakB.onclick = (e) => { e.stopPropagation(); speak(correctText, e.currentTarget); };
+    speakB.click();
+  }
 
   // Show feedback
   const fb = document.getElementById('conv-feedback');
