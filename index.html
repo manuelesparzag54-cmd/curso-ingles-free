@@ -195,12 +195,20 @@ input,select{font-family:inherit;outline:none}
 [data-theme="dark"] .grammar-box{background:linear-gradient(135deg,rgba(1,33,105,0.2),rgba(200,16,46,0.1));border-color:#1A3060}
 .grammar-box pre{white-space:pre-wrap;font-family:inherit;font-size:0.9rem;color:var(--text);line-height:1.7}
 
-/* Grammar animations — keyword glow */
-@keyframes keywordGlow{from{opacity:0;text-shadow:0 0 8px #F4B942}to{opacity:1;text-shadow:none}}
+/* Grammar animations — section header entrance */
+@keyframes keywordGlow{from{opacity:0;letter-spacing:0.08em}to{opacity:1;letter-spacing:0.04em}}
 .grammar-keyword{
-  color:#F4B942;font-weight:700;
-  animation:keywordGlow 0.6s ease-out forwards;
+  color:var(--primary);font-weight:800;font-size:0.88rem;letter-spacing:0.04em;
+  display:block;padding:8px 0 4px;
+  border-bottom:2px solid rgba(1,33,105,0.18);margin-bottom:2px;
+  animation:keywordGlow 0.5s ease-out forwards;
 }
+[data-theme="dark"] .grammar-keyword{border-bottom-color:rgba(200,16,46,0.4);}
+/* Bullet example line: EN → ES */
+.grammar-bullet{color:var(--primary);font-weight:700;margin-right:5px;flex-shrink:0}
+.grammar-en{font-weight:600;color:var(--text)}
+.grammar-arrow{color:var(--text2);margin:0 6px;flex-shrink:0;font-size:0.82em}
+.grammar-es{color:var(--text2);font-style:italic;font-size:0.875em}
 /* Word-by-word fade-in for example lines */
 @keyframes wordFadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 /* SVO color coding */
@@ -680,6 +688,7 @@ input,select{font-family:inherit;outline:none}
   border-left:3px solid var(--primary);
   padding-left:8px;
 }
+.grammar-line.is-header{padding:0 2px}
 .grammar-line-text{
   font-family:inherit;font-size:0.9rem;color:var(--text);
   line-height:1.7;white-space:pre-wrap;flex:1;
@@ -2282,12 +2291,19 @@ function loadModule(id) {
       const textDiv = document.createElement('div');
       textDiv.className = 'grammar-line-text';
 
+      let suppressSpeak = false;
       if (!line.trim()) {
         // Empty line — preserve whitespace
         textDiv.innerHTML = '&nbsp;';
+        suppressSpeak = true;
       } else if (isGrammarHeader(line)) {
-        // Header line (ALL-CAPS title ending with colon) — keyword glow
+        // Header line — bold section divider, no per-line speak button
+        div.classList.add('is-header');
         textDiv.appendChild(buildGrammarHeader(line));
+        suppressSpeak = true;
+      } else if (/^\s*[•·]/.test(line)) {
+        // Bullet example line — styled EN → ES
+        textDiv.appendChild(buildExampleLine(line));
       } else if (hasSVOWords(line)) {
         // Line contains Subject/Verb/Object markers — apply SVO color coding
         textDiv.appendChild(buildSVOLine(line));
@@ -2298,7 +2314,7 @@ function loadModule(id) {
 
       div.appendChild(textDiv);
 
-      if (hasSpeakable) {
+      if (hasSpeakable && !suppressSpeak) {
         const speakBtn = document.createElement('button');
         speakBtn.className = 'btn-speak-line';
         speakBtn.title = 'Escuchar en inglés';
@@ -2342,6 +2358,37 @@ function buildGrammarHeader(line) {
   span.className = 'grammar-keyword';
   span.textContent = line;
   return span;
+}
+
+// Builds a bullet example line with styled EN → ES
+function buildExampleLine(line) {
+  const container = document.createElement('span');
+  container.style.cssText = 'display:flex;align-items:baseline;flex-wrap:wrap';
+  const content = line.replace(/^\s*[•·]\s*/, '');
+  const bullet = document.createElement('span');
+  bullet.className = 'grammar-bullet';
+  bullet.textContent = '•';
+  container.appendChild(bullet);
+  if (content.includes('→')) {
+    const arrowIdx = content.indexOf('→');
+    const enSpan = document.createElement('span');
+    enSpan.className = 'grammar-en';
+    enSpan.textContent = content.substring(0, arrowIdx).trim();
+    const arrowSpan = document.createElement('span');
+    arrowSpan.className = 'grammar-arrow';
+    arrowSpan.textContent = '→';
+    const esSpan = document.createElement('span');
+    esSpan.className = 'grammar-es';
+    esSpan.textContent = content.substring(arrowIdx + 1).trim();
+    container.appendChild(enSpan);
+    container.appendChild(arrowSpan);
+    container.appendChild(esSpan);
+  } else {
+    const text = document.createElement('span');
+    text.textContent = content;
+    container.appendChild(text);
+  }
+  return container;
 }
 
 // SVO detection — words that signal Subject, Verb, or Object roles in grammar explanations
