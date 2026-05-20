@@ -207,7 +207,15 @@ input,select{font-family:inherit;outline:none}
 /* Bullet example line: EN → ES */
 .grammar-bullet{color:var(--primary);font-weight:700;margin-right:5px;flex-shrink:0}
 .grammar-en{font-weight:600;color:var(--text)}
-.grammar-arrow{color:var(--text2);margin:0 6px;flex-shrink:0;font-size:0.82em}
+.grammar-arrow{
+  color:var(--primary);font-size:0.75rem;font-weight:700;
+  margin:0 8px;flex-shrink:0;align-self:center;
+  background:rgba(1,33,105,0.07);border:1px solid rgba(1,33,105,0.18);
+  border-radius:20px;padding:1px 8px;line-height:1.6;
+}
+[data-theme="dark"] .grammar-arrow{
+  background:rgba(200,16,46,0.1);border-color:rgba(200,16,46,0.3);color:#ff8a94;
+}
 .grammar-es{color:var(--text2);font-style:italic;font-size:0.875em}
 /* Word-by-word fade-in for example lines */
 @keyframes wordFadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
