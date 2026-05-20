@@ -713,7 +713,7 @@ input,select{font-family:inherit;outline:none}
   line-height:1.7;white-space:pre-wrap;flex:1;
 }
 .btn-speak-line{
-  background:none;border:1.5px solid transparent;color:var(--text2);
+  background:var(--surface2);border:1.5px solid var(--border);color:var(--primary);
   width:28px;height:28px;border-radius:50%;font-size:0.82rem;padding:0;
   flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
   transition:var(--transition);margin-top:2px;cursor:pointer;
@@ -2312,7 +2312,7 @@ function loadModule(id) {
       div.dataset.lineIndex = i;
       // Use the smart English extractor
       const englishPart = extractEnglishFromLine(line);
-      const hasSpeakable = englishPart.length > 2;
+      const hasSpeakable = englishPart.length >= 2;
 
       // Build the text container with animated content
       const textDiv = document.createElement('div');
@@ -5153,11 +5153,11 @@ function extractEnglishFromLine(line) {
     const parts = text.split('→');
     const before = parts[0].trim();
     const after  = (parts[1] || '').trim();
-    if (before.length <= 2) {
-      // English is after the arrow (indented example line)
+    if (before.length === 0) {
+      // English is after the arrow (indented example line like "→ There is some bread")
       text = after;
     } else {
-      // English is before the arrow (normal case)
+      // English is before the arrow (normal case, including short words like "my", "I")
       text = before;
     }
   }
@@ -5229,7 +5229,7 @@ function speakGrammar(moduleId, mode, ev) {
   const speakableLines = [];
   allLines.forEach((line, realIndex) => {
     const english = extractEnglishFromLine(line);
-    if (english.length > 2) {
+    if (english.length >= 2) {
       speakableLines.push({ text: english, lineIndex: realIndex });
     }
   });
