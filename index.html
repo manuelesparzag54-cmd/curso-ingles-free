@@ -2391,10 +2391,9 @@ function buildExampleLine(line) {
   return container;
 }
 
-// SVO detection — words that signal Subject, Verb, or Object roles in grammar explanations
-// Uses non-global regexes for .test() to avoid lastIndex issues
-const SVO_SUBJECT_RE = /\b(Subject|Sujeto|I|You|He|She|It|We|They)\b/i;
-const SVO_VERB_RE    = /\b(Verb|Verbo|am|is|are|was|were|have|has|do|does|did|be|been|being|can|could|will|would|shall|should|may|might|must)\b/i;
+// SVO detection — only fires on lines that explicitly label grammatical roles
+const SVO_SUBJECT_RE = /\b(Subject|Sujeto)\b/i;
+const SVO_VERB_RE    = /\b(Verb|Verbo)\b/i;
 const SVO_OBJECT_RE  = /\b(Object|Complement|Complemento|Objeto)\b/i;
 
 function hasSVOWords(line) {
@@ -2438,12 +2437,9 @@ function buildSVOLine(line) {
 // Returns { cls, label } for a token if it matches a SVO role, else null
 function getSVORole(token) {
   const t = token.replace(/[^a-zA-Z]/g, '');
-  if (/^(Subject|Sujeto)$/i.test(t)) return { cls: 'subject', label: 'Sujeto' };
-  if (/^(Verb|Verbo)$/i.test(t))    return { cls: 'verb',    label: 'Verbo' };
-  if (/^(Object|Complement|Complemento|Objeto)$/i.test(t)) return { cls: 'object', label: 'Complemento' };
-  if (/^(I|You|He|She|It|We|They)$/.test(t)) return { cls: 'subject', label: 'Sujeto' };
-  if (/^(am|is|are|was|were|have|has|do|does|did|be|been|being|can|could|will|would|shall|should|may|might|must)$/.test(t))
-    return { cls: 'verb', label: 'Verbo' };
+  if (/^(Subject|Sujeto)$/i.test(t))                       return { cls: 'subject', label: 'Sujeto' };
+  if (/^(Verb|Verbo)$/i.test(t))                           return { cls: 'verb',    label: 'Verbo' };
+  if (/^(Object|Complement|Complemento|Objeto)$/i.test(t)) return { cls: 'object',  label: 'Complemento' };
   return null;
 }
 
