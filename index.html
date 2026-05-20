@@ -173,7 +173,18 @@ input,select{font-family:inherit;outline:none}
   padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;
 }
 .vocab-en{font-weight:600;color:var(--primary)}
-.vocab-es{font-size:0.85rem;color:var(--text2)}
+.vocab-es{font-size:0.85rem;color:var(--text2);transition:filter 0.2s}
+/* Vocab recall mode */
+.btn-hide-trans{
+  background:var(--surface2);border:1.5px solid var(--border);color:var(--text2);
+  padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600;
+  cursor:pointer;transition:var(--transition);
+}
+.btn-hide-trans:hover{border-color:var(--primary);color:var(--primary)}
+.btn-hide-trans.active{border-color:var(--primary);color:var(--primary);background:rgba(1,33,105,0.06)}
+.vocab-grid.hide-trans .vocab-es{filter:blur(5px);user-select:none;pointer-events:none}
+.vocab-grid.hide-trans .vocab-item{cursor:pointer}
+.vocab-grid.hide-trans .vocab-item.revealed .vocab-es{filter:none}
 .btn-speak{
   background:var(--surface2);border:1.5px solid var(--border);color:var(--primary);
   width:34px;height:34px;border-radius:50%;font-size:1rem;padding:0;flex-shrink:0;
@@ -2231,7 +2242,10 @@ function loadModule(id) {
     </div>
 
     <div class="card">
-      <h3>📖 Vocabulario</h3>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <h3 style="margin-bottom:0">📖 Vocabulario</h3>
+        <button class="btn-hide-trans" id="btn-hide-trans-${id}" onclick="toggleVocabHide(${id})">👁 Ocultar</button>
+      </div>
       <div class="vocab-grid" id="vgrid-${id}"></div>
     </div>
 
@@ -2280,6 +2294,11 @@ function loadModule(id) {
       </div>
       <button class="btn-speak" title="Escuchar">🔊</button>`;
     item.querySelector('.btn-speak').addEventListener('click', (e) => speak(v.en, e.currentTarget));
+    item.addEventListener('click', (e) => {
+      if (e.target.closest('.btn-speak')) return;
+      const grid = item.closest('.vocab-grid');
+      if (grid && grid.classList.contains('hide-trans')) item.classList.toggle('revealed');
+    });
     vg.appendChild(item);
   });
 
@@ -2347,6 +2366,16 @@ function loadModule(id) {
       part.classList.add('touch-active');
     }, { passive: true });
   }
+}
+
+function toggleVocabHide(id) {
+  const grid = document.getElementById(`vgrid-${id}`);
+  const btn  = document.getElementById(`btn-hide-trans-${id}`);
+  if (!grid || !btn) return;
+  const hiding = grid.classList.toggle('hide-trans');
+  btn.textContent = hiding ? '👁 Mostrar' : '👁 Ocultar';
+  btn.classList.toggle('active', hiding);
+  if (!hiding) grid.querySelectorAll('.vocab-item.revealed').forEach(el => el.classList.remove('revealed'));
 }
 
 // Returns true if a grammar line is a section header (mostly uppercase, ends with colon)
